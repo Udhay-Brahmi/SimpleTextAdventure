@@ -15,43 +15,7 @@ namespace SimpleTextAdventure
             currentZone = startingZone;
         }
 
-        public void PlayGame()
-        {
-            Console.WriteLine("Introduction text. Type a command.");
-
-            while (true)
-            {
-                Console.Write(Environment.NewLine + "> ");
-                Program.ParseUserInput(Console.ReadLine(), out Command command, out string[] parameters);
-
-                switch (command)
-                {
-                    case Command.GameHelp:
-                        Console.WriteLine("List of Commands: help, quit, version, look, move / go.");
-                        Console.WriteLine("Commands with Parameters: look <direction>, move <direction>");
-                        Console.WriteLine("Quick Commands: l (look), n (north / move north), etc.");
-                        break;
-                    case Command.GameQuit:
-                        Environment.Exit(0);
-                        break;
-                    case Command.GameVersion:
-                        Console.WriteLine("SimpleTextAdventure by Nonparoxysmic");
-                        Console.WriteLine("There's no version numbers yet.");
-                        break;
-                    case Command.Look:
-                        LookAction(parameters);
-                        break;
-                    case Command.Move:
-                        MoveAction(parameters);
-                        break;
-                    default:
-                        Console.WriteLine("I don't recognize that command. Try 'help'.");
-                        break;
-                }
-            }
-        }
-
-        void LookAction(string[] parameters)
+        public void LookAction(string[] parameters)
         {
             if (parameters.Length == 0)
             {
@@ -64,7 +28,7 @@ namespace SimpleTextAdventure
             }
             else
             {
-                if (Program.TryParseDirection(parameters[0], out Direction direction))
+                if (Parser.TryParseDirection(parameters[0], out Direction direction))
                 {
                     if (currentZone.exits.ContainsKey(direction))
                     {
@@ -83,7 +47,7 @@ namespace SimpleTextAdventure
             }
         }
 
-        void MoveAction(string[] parameters)
+        public void MoveAction(string[] parameters)
         {
             if (parameters.Length == 0)
             {
@@ -91,7 +55,7 @@ namespace SimpleTextAdventure
             }
             else
             {
-                if (Program.TryParseDirection(parameters[0], out Direction direction))
+                if (Parser.TryParseDirection(parameters[0], out Direction direction))
                 {
                     if (currentZone.exits.ContainsKey(direction))
                     {

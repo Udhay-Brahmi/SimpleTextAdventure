@@ -1,13 +1,16 @@
 ﻿using System;
-using System.Linq;
 
 namespace SimpleTextAdventure
 {
-    class Program
+    static class Program
     {
+        public static string gameName = "SimpleTextAdventure";
+        public static string gameAuthor = "Nonparoxysmic";
+        public static string gameVersion = "Very Early Alpha";
+
         static void Main()
         {
-            Console.Title = "SimpleTextAdventure by Nonparoxysmic";
+            Console.Title = gameName + " by " + gameAuthor;
 
             // Create Zones And Items:
 
@@ -42,103 +45,37 @@ namespace SimpleTextAdventure
             // Initialize Player and Begin Game:
 
             Player player = new Player("Tabula Rasa", hall);
-            player.PlayGame();
+            GameLoop gameLoop = new GameLoop(player);
+            gameLoop.PlayGame();
         }
 
-        public static void ParseUserInput(string userInput, out Command commandOut, out string[] parametersOut)
+        public static void PrintWrappedText(string text, int width, string indent = "", bool doIndent = false)
         {
-            // Found this on the internet. TODO: Understand LINQ
-            string[] terms = userInput.ToLower().Split(null).Where(x => !string.IsNullOrEmpty(x)).ToArray();
+            string trimmedText = text.Trim();
 
-            if (terms == null || terms.Length == 0) terms = new string[] { "" };
+            if (doIndent) trimmedText = indent + trimmedText;
 
-            Command command;
-            switch (terms[0])
+            if (trimmedText.Length <= width)
             {
-                case "":
-                case "help":
-                case "?":
-                case "commands":
-                    command = Command.GameHelp;
-                    break;
-                case "quit":
-                    command = Command.GameQuit;
-                    break;
-                case "version":
-                    command = Command.GameVersion;
-                    break;
-                case "look":
-                case "l":
-                    command = Command.Look;
-                    break;
-                case "move":
-                case "go":
-                    command = Command.Move;
-                    break;
-                case "n":
-                    commandOut = Command.Move;
-                    parametersOut = new string[] { "North" };
-                    return;
-                case "e":
-                    commandOut = Command.Move;
-                    parametersOut = new string[] { "East" };
-                    return;
-                case "s":
-                    commandOut = Command.Move;
-                    parametersOut = new string[] { "South" };
-                    return;
-                case "w":
-                    commandOut = Command.Move;
-                    parametersOut = new string[] { "West" };
-                    return;
-                default:
-                    command = Command.Invalid;
-                    break;
+                Console.WriteLine(trimmedText);
+                return;
             }
-            commandOut = command;
 
-            string[] parameters;
-            if (terms.Length == 1) parameters = new string[] { };
-            else
+            int lineBreakWidth = width;
+            for (int pos = width; pos > 0; pos--)
             {
-                parameters = new string[terms.Length - 1];
-                for (int i = 0; i < parameters.Length; i++)
+                if (Char.IsWhiteSpace(trimmedText[pos]))
                 {
-                    parameters[i] = terms[i + 1];
+                    lineBreakWidth = pos;
+                    break;
                 }
             }
-            parametersOut = parameters;
-        }
+            string firstLine = trimmedText.Substring(0, lineBreakWidth);
+            string remainder = trimmedText.Substring(lineBreakWidth);
 
-        public static bool TryParseDirection(string input, out Direction directionOut)
-        {
-            Direction direction;
-            bool isValidDirection = true;
-            switch (input.ToLower())
-            {
-                case "n":
-                case "north":
-                    direction = Direction.North;
-                    break;
-                case "e":
-                case "east":
-                    direction = Direction.East;
-                    break;
-                case "s":
-                case "south":
-                    direction = Direction.South;
-                    break;
-                case "w":
-                case "west":
-                    direction = Direction.West;
-                    break;
-                default:
-                    isValidDirection = false;
-                    direction = 0;
-                    break;
-            }
-            directionOut = direction;
-            return isValidDirection;
+            Console.WriteLine(firstLine);
+            if (indent != "") doIndent = true;
+            PrintWrappedText(remainder, width, indent, doIndent);
         }
 
         public static void PrintErrorAndExit(string message = "Unknown Error")

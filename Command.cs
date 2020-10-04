@@ -7,6 +7,7 @@
         GameQuit,
         GameVersion,
         Look,
-        Move
+        Move,
+        Examine
     }
 }
