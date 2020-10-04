@@ -6,12 +6,14 @@ namespace SimpleTextAdventure
     class Zone
     {
         public string name;
+        public string description;
         public Dictionary<Direction, Zone> exits = new Dictionary<Direction, Zone>();
         public List<Item> items = new List<Item>();
 
-        public Zone(string name)
+        public Zone(string name, string description)
         {
             this.name = name;
+            this.description = description;
         }
 
         public static Direction ReverseDirection(Direction direction)
