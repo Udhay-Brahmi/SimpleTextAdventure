@@ -14,20 +14,20 @@ namespace SimpleTextAdventure
 
             // Create Zones And Items:
 
-            Zone study = new Zone("The Study", "It's the study.");
-            Zone billiards = new Zone("The Billiards Room", "It's the billiards room.");
-            Zone lounge = new Zone("The Lounge", "It's the lounge.");
-            Zone library = new Zone("The Library", "It's the library.");
-            Zone hall = new Zone("The Hall", "It's the hall");
-            Zone dining = new Zone("The Dining Room", "It's the dining room.");
-            Zone conservatory = new Zone("The Conservatory", "It's the conservatory.");
-            Zone ballroom = new Zone("The Ballroom", "It's the ballroom.");
-            Zone kitchen = new Zone("The Kitchen", "It's the kitchen.");
+            Zone study = new Zone("study", "the STUDY", "A spacious office with a large desk and a fireplace.");
+            Zone billiard = new Zone("billiard", "the BILLIARD Room", "A gaming room featuring a billiard table.");
+            Zone lounge = new Zone("lounge", "the LOUNGE", "A relaxing space.");
+            Zone library = new Zone("library", "the LIBRARY", "The walls are lined with bookcases.");
+            Zone hall = new Zone("hall", "the HALL", "The main hall of the building.");
+            Zone dining = new Zone("dining", "the DINING Room", "The large dining table could seat six or seven.");
+            Zone conservatory = new Zone("conservatory", "the CONSERVATORY", "A humid sunroom with a variety of plants.");
+            Zone ballroom = new Zone("ballroom", "the BALLROOM", "An opulent ballroom, empty save for a grand piano.");
+            Zone kitchen = new Zone("kitchen", "the KITCHEN", "Yep. It's a kitchen.");
 
-            Zone.ConnectZones(study, Direction.East, billiards);
-            Zone.ConnectZones(billiards, Direction.East, lounge);
+            Zone.ConnectZones(study, Direction.East, billiard);
+            Zone.ConnectZones(billiard, Direction.East, lounge);
             Zone.ConnectZones(study, Direction.South, library);
-            Zone.ConnectZones(billiards, Direction.South, hall);
+            Zone.ConnectZones(billiard, Direction.South, hall);
             Zone.ConnectZones(lounge, Direction.South, dining);
             Zone.ConnectZones(library, Direction.East, hall);
             Zone.ConnectZones(hall, Direction.East, dining);
@@ -35,12 +35,12 @@ namespace SimpleTextAdventure
             Zone.ConnectZones(dining, Direction.South, kitchen);
             Zone.ConnectZones(conservatory, Direction.East, ballroom);
 
-            study.items.Add(new Item("a heavy lead pipe", "pipe"));
-            lounge.items.Add(new Item("a length of rope", "rope"));
-            library.items.Add(new Item("a revolver", "revolver"));
-            conservatory.items.Add(new Item("a large wrench", "wrench"));
-            ballroom.items.Add(new Item("a hefty candlestick", "candlestick"));
-            kitchen.items.Add(new Item("a sharp knife", "knife"));
+            study.items.Add(new Item("pipe", "a heavy lead PIPE", "A section of old bent pipe made of lead. Fairly heavy."));
+            lounge.items.Add(new Item("rope", "a length of ROPE", "A short length of sturdy rope with some fraying near the middle."));
+            library.items.Add(new Item("revolver", "a REVOLVER", "A handgun with a six-chamber cylinder. One round has already been fired."));
+            conservatory.items.Add(new Item("wrench", "a large WRENCH", "A very large wrench with some damage. Looks like it was dropped."));
+            ballroom.items.Add(new Item("candlestick", "a hefty CANDLESTICK", "A large golden candlestick. It was cleaned recently."));
+            kitchen.items.Add(new Item("knife", "a sharp KNIFE", "A dagger with a long sharp blade. The very tip is broken off."));
 
             // Initialize Player and Begin Game:
 
@@ -53,7 +53,12 @@ namespace SimpleTextAdventure
         {
             string trimmedText = text.Trim();
 
-            if (doIndent) trimmedText = indent + trimmedText;
+            int indentLength = 0;
+            if (doIndent)
+            {
+                trimmedText = indent + trimmedText;
+                indentLength = indent.Length;
+            }
 
             if (trimmedText.Length <= width)
             {
@@ -62,7 +67,7 @@ namespace SimpleTextAdventure
             }
 
             int lineBreakWidth = width;
-            for (int pos = width; pos > 0; pos--)
+            for (int pos = width; pos > indentLength; pos--)
             {
                 if (Char.IsWhiteSpace(trimmedText[pos]))
                 {
@@ -70,7 +75,7 @@ namespace SimpleTextAdventure
                     break;
                 }
             }
-            string firstLine = trimmedText.Substring(0, lineBreakWidth);
+            string firstLine = trimmedText.Substring(0, lineBreakWidth).TrimEnd();
             string remainder = trimmedText.Substring(lineBreakWidth);
 
             Console.WriteLine(firstLine);

@@ -4,13 +4,20 @@ namespace SimpleTextAdventure
 {
     class Item
     {
-        public string longName;
-        public string shortName;
+        public string referenceName;
+        public string briefDescription;
+        public string examineText;
 
-        public Item(string longName, string shortName)
+        public Item(string referenceName, string briefDescription, string examineText)
         {
-            this.longName = longName;
-            this.shortName = shortName;
+            this.referenceName = referenceName;
+            this.briefDescription = briefDescription;
+            this.examineText = examineText;
+        }
+
+        public string GetExamineText()
+        {
+            return examineText;
         }
     }
 }

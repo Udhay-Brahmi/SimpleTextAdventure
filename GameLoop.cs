@@ -43,7 +43,7 @@ namespace SimpleTextAdventure
                         player.MoveAction(parameters);
                         break;
                     case Command.Examine:
-                        Console.WriteLine("Examine not implemented yet.");
+                        player.ExamineAction(parameters);
                         break;
                     default:
                         Console.WriteLine("Unrecognized command. Type \"help\" for a list of commands.");

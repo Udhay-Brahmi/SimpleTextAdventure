@@ -19,11 +19,11 @@ namespace SimpleTextAdventure
         {
             if (parameters.Length == 0)
             {
-                Console.WriteLine("You look around. " + currentZone.description);
+                Console.WriteLine("You are in " + currentZone.briefDescription + ".");
                 Console.WriteLine("You can move: " + currentZone.ListOfExitDirections());
                 if (currentZone.items.Count > 0)
                 {
-                    Console.WriteLine("You see: " + currentZone.items[0].longName);
+                    Console.WriteLine("You see: " + currentZone.items[0].briefDescription);
                 }
             }
             else
@@ -32,8 +32,7 @@ namespace SimpleTextAdventure
                 {
                     if (currentZone.exits.ContainsKey(direction))
                     {
-                        Console.Write("You look " + direction + ". ");
-                        Console.WriteLine(currentZone.exits[direction].description);
+                        Console.WriteLine("You look " + direction + ". You see " + currentZone.exits[direction].briefDescription + ".");
                     }
                     else
                     {
@@ -61,7 +60,7 @@ namespace SimpleTextAdventure
                     {
                         Console.Write("You move " + direction + ". ");
                         currentZone = currentZone.exits[direction];
-                        Console.WriteLine("You arrive at " + currentZone.name);
+                        Console.WriteLine("You arrive at " + currentZone.briefDescription + ".");
                     }
                     else
                     {
@@ -71,6 +70,29 @@ namespace SimpleTextAdventure
                 else
                 {
                     Console.WriteLine("Not a valid direction.");
+                }
+            }
+        }
+
+        public void ExamineAction(string[] parameters)
+        {
+            if (parameters.Length == 0)
+            {
+                Console.WriteLine("This command requires a target.");
+            }
+            else
+            {
+                if (currentZone.items.Count > 0 && currentZone.items[0].referenceName == parameters[0])
+                {
+                    Console.WriteLine(currentZone.items[0].GetExamineText());
+                }
+                else if (currentZone.referenceName == parameters[0])
+                {
+                    Console.WriteLine(currentZone.GetExamineText());
+                }
+                else
+                {
+                    Console.WriteLine("Unrecognized target.");
                 }
             }
         }

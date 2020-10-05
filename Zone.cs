@@ -5,15 +5,22 @@ namespace SimpleTextAdventure
 {
     class Zone
     {
-        public string name;
-        public string description;
+        public string referenceName;
+        public string briefDescription;
+        public string examineText;
         public Dictionary<Direction, Zone> exits = new Dictionary<Direction, Zone>();
         public List<Item> items = new List<Item>();
 
-        public Zone(string name, string description)
+        public Zone(string referenceName, string briefDescription, string examineText)
         {
-            this.name = name;
-            this.description = description;
+            this.referenceName = referenceName;
+            this.briefDescription = briefDescription;
+            this.examineText = examineText;
+        }
+
+        public string GetExamineText()
+        {
+            return examineText;
         }
 
         public static Direction ReverseDirection(Direction direction)
@@ -35,7 +42,7 @@ namespace SimpleTextAdventure
             }
             catch (ArgumentException)
             {
-                Program.PrintErrorAndExit("Attempted to add duplicate exit to Zone: " + this.name);
+                Program.PrintErrorAndExit("Attempted to add duplicate exit to Zone: " + this.briefDescription);
             }
         }
 
