@@ -3,8 +3,8 @@
     public enum Command
     {
         Invalid,
-        GameHelp,
         GameQuit,
+        GameHelp,
         GameVersion,
         Look,
         Move,

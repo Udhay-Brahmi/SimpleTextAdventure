@@ -20,17 +20,17 @@ namespace SimpleTextAdventure
             {
                 commandNumber++;
                 Console.Write(Environment.NewLine + "[" + commandNumber + "] > ");
-                Parser.ParseUserInput(Console.ReadLine(), out Command command, out string[] parameters);
+                Parser.ParseUserInput(Console.ReadLine(), out Command command, out Parameter[] parameters);
 
                 switch (command)
                 {
-                    case Command.GameHelp:
-                        Console.WriteLine("List of Commands: help, quit, version, look, move / go, examine.");
-                        Console.WriteLine("Commands with Parameters: look <direction>, move <direction>");
-                        Console.WriteLine("Quick Commands: l (look), n (north / move north), etc.");
-                        break;
                     case Command.GameQuit:
                         Environment.Exit(0);
+                        break;
+                    case Command.GameHelp:
+                        Console.WriteLine("List of Commands: quit, help, version, look, move / go, examine.");
+                        Console.WriteLine("Commands with Parameters: look <direction>, move <direction>, examine <target>");
+                        Console.WriteLine("Quick Commands: l (look), n (north / move north), etc.");
                         break;
                     case Command.GameVersion:
                         Console.WriteLine(Program.gameName + " by " + Program.gameAuthor);

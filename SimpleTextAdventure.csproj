@@ -47,6 +47,8 @@
     <Compile Include="Direction.cs" />
     <Compile Include="GameLoop.cs" />
     <Compile Include="Item.cs" />
+    <Compile Include="Parameter.cs" />
+    <Compile Include="ParameterType.cs" />
     <Compile Include="Parser.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="Zone.cs" />

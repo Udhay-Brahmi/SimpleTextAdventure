@@ -15,7 +15,7 @@ namespace SimpleTextAdventure
             currentZone = startingZone;
         }
 
-        public void LookAction(string[] parameters)
+        public void LookAction(Parameter[] parameters)
         {
             if (parameters.Length == 0)
             {
@@ -26,55 +26,49 @@ namespace SimpleTextAdventure
                     Console.WriteLine("You see: " + currentZone.items[0].briefDescription);
                 }
             }
-            else
+            else if (parameters[0].type == ParameterType.Direction)
             {
-                if (Parser.TryParseDirection(parameters[0], out Direction direction))
+                if (currentZone.exits.ContainsKey(parameters[0].directionParameter))
                 {
-                    if (currentZone.exits.ContainsKey(direction))
-                    {
-                        Console.WriteLine("You look " + direction + ". You see " + currentZone.exits[direction].briefDescription + ".");
-                    }
-                    else
-                    {
-                        Console.WriteLine("There's nothing that way.");
-                    }
+                    Console.WriteLine("You look " + parameters[0].directionParameter + ". You see " + currentZone.exits[parameters[0].directionParameter].briefDescription + ".");
                 }
                 else
                 {
-                    Console.WriteLine("Not a valid direction.");
+                    Console.WriteLine("There's nothing that way.");
                 }
+            }
+            else
+            {
+                Console.WriteLine("Not a valid direction.");
             }
         }
 
-        public void MoveAction(string[] parameters)
+        public void MoveAction(Parameter[] parameters)
         {
             if (parameters.Length == 0)
             {
                 Console.WriteLine("You must specify a direction to move.");
             }
-            else
+            else if (parameters[0].type == ParameterType.Direction)
             {
-                if (Parser.TryParseDirection(parameters[0], out Direction direction))
+                if (currentZone.exits.ContainsKey(parameters[0].directionParameter))
                 {
-                    if (currentZone.exits.ContainsKey(direction))
-                    {
-                        Console.Write("You move " + direction + ". ");
-                        currentZone = currentZone.exits[direction];
-                        Console.WriteLine("You arrive at " + currentZone.briefDescription + ".");
-                    }
-                    else
-                    {
-                        Console.WriteLine("You can't move that way.");
-                    }
+                    Console.Write("You move " + parameters[0].directionParameter + ". ");
+                    currentZone = currentZone.exits[parameters[0].directionParameter];
+                    Console.WriteLine("You arrive at " + currentZone.briefDescription + ".");
                 }
                 else
                 {
-                    Console.WriteLine("Not a valid direction.");
+                    Console.WriteLine("You can't move that way.");
                 }
+            }
+            else
+            {
+                Console.WriteLine("Not a valid direction.");
             }
         }
 
-        public void ExamineAction(string[] parameters)
+        public void ExamineAction(Parameter[] parameters)
         {
             if (parameters.Length == 0)
             {
@@ -82,17 +76,29 @@ namespace SimpleTextAdventure
             }
             else
             {
-                if (currentZone.items.Count > 0 && currentZone.items[0].referenceName == parameters[0])
+                if (currentZone.items.Count > 0 && currentZone.items[0].referenceName == parameters[0].stringParameter)
                 {
                     Console.WriteLine(currentZone.items[0].GetExamineText());
                 }
-                else if (currentZone.referenceName == parameters[0])
+                else if (currentZone.referenceName == parameters[0].stringParameter)
                 {
                     Console.WriteLine(currentZone.GetExamineText());
                 }
                 else
                 {
-                    Console.WriteLine("Unrecognized target.");
+                    bool adjacentZoneFound = false;
+                    foreach (KeyValuePair<Direction,Zone> exit in currentZone.exits)
+                    {
+                        if (exit.Value.referenceName == parameters[0].stringParameter)
+                        {
+                            Console.WriteLine("You are too far away to examine " + exit.Value.briefDescription + ".");
+                            adjacentZoneFound = true;
+                        }
+                    }
+                    if (!adjacentZoneFound)
+                    {
+                        Console.WriteLine("Unrecognized target.");
+                    }
                 }
             }
         }

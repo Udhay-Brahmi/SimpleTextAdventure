@@ -5,7 +5,7 @@ namespace SimpleTextAdventure
 {
     static class Parser
     {
-        public static void ParseUserInput(string userInput, out Command commandOut, out string[] parametersOut)
+        public static void ParseUserInput(string userInput, out Command commandOut, out Parameter[] parametersOut)
         {
             // Found this on the internet. TODO: Understand LINQ
             string[] terms = userInput.ToLower().Split(null).Where(x => !string.IsNullOrEmpty(x)).ToArray();
@@ -14,14 +14,14 @@ namespace SimpleTextAdventure
             if (terms == null || terms.Length == 0) terms = new string[] { "" };
             switch (terms[0])
             {
+                case "quit":
+                    command = Command.GameQuit;
+                    break;
                 case "":
                 case "help":
                 case "?":
                 case "commands":
                     command = Command.GameHelp;
-                    break;
-                case "quit":
-                    command = Command.GameQuit;
                     break;
                 case "version":
                     command = Command.GameVersion;
@@ -43,7 +43,8 @@ namespace SimpleTextAdventure
                 case "w":
                 case "west":
                     commandOut = Command.Move;
-                    parametersOut = new string[] { terms[0] };
+                    TryParseDirection(terms[0], out Direction direction);
+                    parametersOut = new Parameter[] { new Parameter(direction) };
                     return;
                 case "examine":
                 case "study":
@@ -55,16 +56,28 @@ namespace SimpleTextAdventure
             }
             commandOut = command;
 
-            string[] parameters;
-            if (terms.Length == 1) parameters = new string[] { };
-            else
+            if (command == Command.Invalid)
             {
-                parameters = new string[terms.Length - 1];
+                parametersOut = new Parameter[0];
+                return;
+            }
+
+            Parameter[] parameters = new Parameter[terms.Length - 1];
+            if (parameters.Length > 0)
+            {
                 for (int i = 0; i < parameters.Length; i++)
                 {
-                    parameters[i] = terms[i + 1];
+                    if (TryParseDirection(terms[i + 1], out Direction directionParameter))
+                    {
+                        parameters[i] = new Parameter(directionParameter);
+                    }
+                    else
+                    {
+                        parameters[i] = new Parameter(terms[i + 1]);
+                    }
                 }
             }
+            
             parametersOut = parameters;
         }
 
