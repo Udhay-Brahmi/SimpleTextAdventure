@@ -5,27 +5,57 @@ namespace SimpleTextAdventure
 {
     class Zone
     {
-        public string referenceName;
-        public string briefDescription;
+        public string codeName;
+        public string name;
         public string examineText;
+
         public Dictionary<Direction, Zone> exits = new Dictionary<Direction, Zone>();
         public List<Item> items = new List<Item>();
 
-        public Zone(string referenceName, string briefDescription, string examineText)
+        public Zone(string codeName, string name, string examineText)
         {
-            this.referenceName = referenceName;
-            this.briefDescription = briefDescription;
+            this.codeName = codeName;
+            this.name = name;
             this.examineText = examineText;
         }
 
-        public string GetExamineText()
+        public void PrintExamineText()
         {
-            return examineText;
+            Program.PrintWrappedText("You examine " + name + ". " + examineText, Console.WindowWidth - 1);
+            PrintExitDirections();
+            if (items.Count > 0)
+            {
+                Program.PrintWrappedText("You see: " + string.Join(", ", items), Console.WindowWidth - 1);
+            }
+        }
+
+        public void PrintExitDirections()
+        {
+            string[] output = new string[exits.Count];
+            int exitNumber = 0;
+            foreach (int i in Enum.GetValues(typeof(Direction)))
+            {
+                if (exits.ContainsKey((Direction)i))
+                {
+                    output[exitNumber] = ((Direction)i).ToString();
+                    exitNumber++;
+                }
+            }
+            Program.PrintWrappedText("You can move: " + string.Join(", ", output), Console.WindowWidth - 1);
         }
 
         public static Direction ReverseDirection(Direction direction)
         {
-            return (Direction)(((int)direction + 2) % 4);
+            switch (direction)
+            {
+                case Direction.North: return Direction.South;
+                case Direction.East: return Direction.West;
+                case Direction.South: return Direction.North;
+                case Direction.West: return Direction.East;
+                default:
+                    Program.PrintErrorAndExit("Zone: Invalid direction in ReverseDirection()");
+                    return Direction.Invalid;
+            }
         }
 
         public static void ConnectZones(Zone startZone, Direction moveDirection, Zone endZone)
@@ -42,25 +72,12 @@ namespace SimpleTextAdventure
             }
             catch (ArgumentException)
             {
-                Program.PrintErrorAndExit("Attempted to add duplicate exit to Zone: " + this.briefDescription);
+                Program.PrintErrorAndExit("Attempted to add duplicate exit to Zone: " + this.name);
             }
-        }
-
-        public string ListOfExitDirections()
-        {
-            string output = "";
-            bool printComma = false;
-            for (int i = 0; i < 4; i++)
+            if (adjacentZone == null)
             {
-                Direction dir = (Direction)i;
-                if (exits.ContainsKey(dir))
-                {
-                    if (printComma) output += ", ";
-                    output += dir.ToString();
-                    printComma = true;
-                }
+                Program.PrintErrorAndExit("Attempted to add invalid exit to Zone: " + this.name);
             }
-            return output;
         }
     }
 }

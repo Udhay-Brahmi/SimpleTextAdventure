@@ -4,20 +4,25 @@ namespace SimpleTextAdventure
 {
     class Item
     {
-        public string referenceName;
-        public string briefDescription;
+        public string codeName;
+        public string name;
         public string examineText;
 
-        public Item(string referenceName, string briefDescription, string examineText)
+        public Item(string codeName, string name, string examineText)
         {
-            this.referenceName = referenceName;
-            this.briefDescription = briefDescription;
+            this.codeName = codeName;
+            this.name = name;
             this.examineText = examineText;
         }
 
-        public string GetExamineText()
+        public override string ToString()
         {
-            return examineText;
+            return name;
+        }
+
+        public void PrintExamineText()
+        {
+            Program.PrintWrappedText(examineText, Console.WindowWidth - 1);
         }
     }
 }

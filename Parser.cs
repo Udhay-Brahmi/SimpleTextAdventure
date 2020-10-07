@@ -77,7 +77,6 @@ namespace SimpleTextAdventure
                     }
                 }
             }
-            
             parametersOut = parameters;
         }
 
@@ -110,6 +109,22 @@ namespace SimpleTextAdventure
             }
             directionOut = direction;
             return isValidDirection;
+        }
+
+        public static Direction ParseDirectionParameter(Parameter[] parameters)
+        {
+            if (parameters.Length == 0)
+            {
+                return Direction.Here;
+            }
+            else if (parameters[0].type == ParameterType.Direction)
+            {
+                return parameters[0].directionParameter;
+            }
+            else
+            {
+                return Direction.Invalid;
+            }
         }
     }
 }

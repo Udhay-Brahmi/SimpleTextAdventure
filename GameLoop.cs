@@ -37,7 +37,7 @@ namespace SimpleTextAdventure
                         Console.WriteLine("Version: " + Program.gameVersion);
                         break;
                     case Command.Look:
-                        player.LookAction(parameters);
+                        player.LookAction(Parser.ParseDirectionParameter(parameters));
                         break;
                     case Command.Move:
                         player.MoveAction(parameters);

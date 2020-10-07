@@ -15,31 +15,31 @@ namespace SimpleTextAdventure
             currentZone = startingZone;
         }
 
-        public void LookAction(Parameter[] parameters)
+        public void LookAction(Direction direction)
         {
-            if (parameters.Length == 0)
+            switch (direction)
             {
-                Console.WriteLine("You are in " + currentZone.briefDescription + ".");
-                Console.WriteLine("You can move: " + currentZone.ListOfExitDirections());
-                if (currentZone.items.Count > 0)
-                {
-                    Console.WriteLine("You see: " + currentZone.items[0].briefDescription);
-                }
-            }
-            else if (parameters[0].type == ParameterType.Direction)
-            {
-                if (currentZone.exits.ContainsKey(parameters[0].directionParameter))
-                {
-                    Console.WriteLine("You look " + parameters[0].directionParameter + ". You see " + currentZone.exits[parameters[0].directionParameter].briefDescription + ".");
-                }
-                else
-                {
-                    Console.WriteLine("There's nothing that way.");
-                }
-            }
-            else
-            {
-                Console.WriteLine("Not a valid direction.");
+                case Direction.Here:
+                    Console.WriteLine("You are in " + currentZone.name + ".");
+                    currentZone.PrintExitDirections();
+                    if (currentZone.items.Count > 0)
+                    {
+                        Console.WriteLine("You see: " + currentZone.items[0].name);
+                    }
+                    break;
+                case Direction.Invalid:
+                    Console.WriteLine("Not a valid direction.");
+                    break;
+                default:
+                    if (currentZone.exits.ContainsKey(direction))
+                    {
+                        Console.WriteLine("You look " + direction + ". You see " + currentZone.exits[direction].name + ".");
+                    }
+                    else
+                    {
+                        Console.WriteLine("There's nothing that way.");
+                    }
+                    break;
             }
         }
 
@@ -55,7 +55,7 @@ namespace SimpleTextAdventure
                 {
                     Console.Write("You move " + parameters[0].directionParameter + ". ");
                     currentZone = currentZone.exits[parameters[0].directionParameter];
-                    Console.WriteLine("You arrive at " + currentZone.briefDescription + ".");
+                    Console.WriteLine("You arrive at " + currentZone.name + ".");
                 }
                 else
                 {
@@ -76,22 +76,22 @@ namespace SimpleTextAdventure
             }
             else
             {
-                if (currentZone.items.Count > 0 && currentZone.items[0].referenceName == parameters[0].stringParameter)
+                if (currentZone.items.Count > 0 && currentZone.items[0].codeName == parameters[0].stringParameter)
                 {
-                    Console.WriteLine(currentZone.items[0].GetExamineText());
+                    currentZone.items[0].PrintExamineText();
                 }
-                else if (currentZone.referenceName == parameters[0].stringParameter)
+                else if (currentZone.codeName == parameters[0].stringParameter)
                 {
-                    Console.WriteLine(currentZone.GetExamineText());
+                    currentZone.PrintExamineText();
                 }
                 else
                 {
                     bool adjacentZoneFound = false;
                     foreach (KeyValuePair<Direction,Zone> exit in currentZone.exits)
                     {
-                        if (exit.Value.referenceName == parameters[0].stringParameter)
+                        if (exit.Value.codeName == parameters[0].stringParameter)
                         {
-                            Console.WriteLine("You are too far away to examine " + exit.Value.briefDescription + ".");
+                            Console.WriteLine("You are too far away to examine " + exit.Value.name + ".");
                             adjacentZoneFound = true;
                         }
                     }
