@@ -21,12 +21,9 @@ namespace SimpleTextAdventure
 
         public void PrintExamineText()
         {
-            Program.PrintWrappedText("You examine " + name + ". " + examineText, Console.WindowWidth - 1);
+            Program.PrintWrappedText("You examine " + name + ". " + examineText);
             PrintExitDirections();
-            if (items.Count > 0)
-            {
-                Program.PrintWrappedText("You see: " + string.Join(", ", items), Console.WindowWidth - 1);
-            }
+            PrintItems();
         }
 
         public void PrintExitDirections()
@@ -41,7 +38,40 @@ namespace SimpleTextAdventure
                     exitNumber++;
                 }
             }
-            Program.PrintWrappedText("You can move: " + string.Join(", ", output), Console.WindowWidth - 1);
+            Program.PrintWrappedText("You can move: " + string.Join(", ", output));
+        }
+
+        public void PrintItems()
+        {
+            if (items.Count > 0)
+            {
+                Program.PrintWrappedText("You see: " + string.Join(", ", items));
+            }
+        }
+
+        public void PrintLook(Direction direction)
+        {
+            switch (direction)
+            {
+                case Direction.Invalid:
+                    Program.PrintWrappedText("Not a valid direction.");
+                    break;
+                case Direction.Here:
+                    Program.PrintWrappedText("You are in " + name + ".");
+                    PrintExitDirections();
+                    PrintItems();
+                    break;
+                default:
+                    if (exits.ContainsKey(direction))
+                    {
+                        Program.PrintWrappedText("You look " + direction + ". You see " + exits[direction].name + ".");
+                    }
+                    else
+                    {
+                        Program.PrintWrappedText("There's nothing that way.");
+                    }
+                    break;
+            }
         }
 
         public static Direction ReverseDirection(Direction direction)
@@ -66,6 +96,10 @@ namespace SimpleTextAdventure
 
         public void AddExit(Direction direction, Zone adjacentZone)
         {
+            if (adjacentZone == null)
+            {
+                Program.PrintErrorAndExit("Attempted to add invalid exit to Zone: " + this.name);
+            }
             try
             {
                 exits.Add(direction, adjacentZone);
@@ -73,10 +107,6 @@ namespace SimpleTextAdventure
             catch (ArgumentException)
             {
                 Program.PrintErrorAndExit("Attempted to add duplicate exit to Zone: " + this.name);
-            }
-            if (adjacentZone == null)
-            {
-                Program.PrintErrorAndExit("Attempted to add invalid exit to Zone: " + this.name);
             }
         }
     }

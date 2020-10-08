@@ -14,7 +14,7 @@ namespace SimpleTextAdventure
 
         public void PlayGame()
         {
-            Console.WriteLine("Introduction text. Type a command.");
+            Program.PrintWrappedText("Introduction text. Type a command.");
 
             while (true)
             {
@@ -28,28 +28,38 @@ namespace SimpleTextAdventure
                         Environment.Exit(0);
                         break;
                     case Command.GameHelp:
-                        Console.WriteLine("List of Commands: quit, help, version, look, move / go, examine.");
-                        Console.WriteLine("Commands with Parameters: look <direction>, move <direction>, examine <target>");
-                        Console.WriteLine("Quick Commands: l (look), n (north / move north), etc.");
+                        PrintGameHelp();
                         break;
                     case Command.GameVersion:
-                        Console.WriteLine(Program.gameName + " by " + Program.gameAuthor);
-                        Console.WriteLine("Version: " + Program.gameVersion);
+                        PrintGameVersion();
                         break;
                     case Command.Look:
                         player.LookAction(Parser.ParseDirectionParameter(parameters));
                         break;
                     case Command.Move:
-                        player.MoveAction(parameters);
+                        player.MoveAction(Parser.ParseDirectionParameter(parameters));
                         break;
                     case Command.Examine:
                         player.ExamineAction(parameters);
                         break;
                     default:
-                        Console.WriteLine("Unrecognized command. Type \"help\" for a list of commands.");
+                        Program.PrintWrappedText("Unrecognized command. Type \"help\" for a list of commands.");
                         break;
                 }
             }
+        }
+
+        void PrintGameHelp()
+        {
+            Program.PrintWrappedText("List of Commands: quit, help, version, look, move / go, examine.");
+            Program.PrintWrappedText("Commands with Parameters: look <direction>, move <direction>, examine <target>");
+            Program.PrintWrappedText("Quick Commands: l (look), n (north / move north), etc.");
+        }
+
+        void PrintGameVersion()
+        {
+            Program.PrintWrappedText(Program.gameName + " by " + Program.gameAuthor);
+            Program.PrintWrappedText("Version: " + Program.gameVersion);
         }
     }
 }

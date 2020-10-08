@@ -104,7 +104,7 @@ namespace SimpleTextAdventure
                     break;
                 default:
                     isValidDirection = false;
-                    direction = 0;
+                    direction = Direction.Invalid;
                     break;
             }
             directionOut = direction;

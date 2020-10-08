@@ -22,7 +22,7 @@ namespace SimpleTextAdventure
 
         public void PrintExamineText()
         {
-            Program.PrintWrappedText(examineText, Console.WindowWidth - 1);
+            Program.PrintWrappedText(examineText);
         }
     }
 }

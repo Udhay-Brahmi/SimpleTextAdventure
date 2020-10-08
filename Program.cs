@@ -8,6 +8,9 @@ namespace SimpleTextAdventure
         public static string gameAuthor = "Nonparoxysmic";
         public static string gameVersion = "Very Early Alpha";
 
+        static readonly string wrappingIndent = "  ";
+        static readonly bool indentFirstLine = false;
+
         static void Main()
         {
             Console.Title = gameName + " by " + gameAuthor;
@@ -49,6 +52,11 @@ namespace SimpleTextAdventure
             gameLoop.PlayGame();
         }
 
+        public static void PrintWrappedText(string text)
+        {
+            PrintWrappedText(text, Console.WindowWidth - 1, wrappingIndent, indentFirstLine);
+        }
+
         public static void PrintWrappedText(string text, int width, string indent = "", bool doIndent = false)
         {
             string trimmedText = text.Trim();
@@ -86,8 +94,8 @@ namespace SimpleTextAdventure
         public static void PrintErrorAndExit(string message = "Unknown Error")
         {
             Console.ForegroundColor = ConsoleColor.DarkRed;
-            Console.WriteLine("ERROR: " + message);
-            Console.WriteLine("Press any key to exit.");
+            Program.PrintWrappedText("ERROR: " + message);
+            Program.PrintWrappedText("Press any key to exit.");
             Console.ReadKey(true);
             Environment.Exit(0);
         }

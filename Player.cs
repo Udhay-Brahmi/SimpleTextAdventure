@@ -17,54 +17,31 @@ namespace SimpleTextAdventure
 
         public void LookAction(Direction direction)
         {
+            currentZone.PrintLook(direction);
+        }
+
+        public void MoveAction(Direction direction)
+        {
             switch (direction)
             {
-                case Direction.Here:
-                    Console.WriteLine("You are in " + currentZone.name + ".");
-                    currentZone.PrintExitDirections();
-                    if (currentZone.items.Count > 0)
-                    {
-                        Console.WriteLine("You see: " + currentZone.items[0].name);
-                    }
-                    break;
                 case Direction.Invalid:
-                    Console.WriteLine("Not a valid direction.");
+                    Program.PrintWrappedText("Not a valid direction.");
+                    break;
+                case Direction.Here:
+                    Program.PrintWrappedText("You must specify a direction to move.");
                     break;
                 default:
                     if (currentZone.exits.ContainsKey(direction))
                     {
-                        Console.WriteLine("You look " + direction + ". You see " + currentZone.exits[direction].name + ".");
+                        Program.PrintWrappedText("You move " + direction + ". ");
+                        currentZone = currentZone.exits[direction];
+                        Program.PrintWrappedText("You arrive at " + currentZone.name + ".");
                     }
                     else
                     {
-                        Console.WriteLine("There's nothing that way.");
+                        Program.PrintWrappedText("You can't move that way.");
                     }
                     break;
-            }
-        }
-
-        public void MoveAction(Parameter[] parameters)
-        {
-            if (parameters.Length == 0)
-            {
-                Console.WriteLine("You must specify a direction to move.");
-            }
-            else if (parameters[0].type == ParameterType.Direction)
-            {
-                if (currentZone.exits.ContainsKey(parameters[0].directionParameter))
-                {
-                    Console.Write("You move " + parameters[0].directionParameter + ". ");
-                    currentZone = currentZone.exits[parameters[0].directionParameter];
-                    Console.WriteLine("You arrive at " + currentZone.name + ".");
-                }
-                else
-                {
-                    Console.WriteLine("You can't move that way.");
-                }
-            }
-            else
-            {
-                Console.WriteLine("Not a valid direction.");
             }
         }
 
@@ -72,7 +49,7 @@ namespace SimpleTextAdventure
         {
             if (parameters.Length == 0)
             {
-                Console.WriteLine("This command requires a target.");
+                Program.PrintWrappedText("This command requires a target.");
             }
             else
             {
@@ -91,13 +68,13 @@ namespace SimpleTextAdventure
                     {
                         if (exit.Value.codeName == parameters[0].stringParameter)
                         {
-                            Console.WriteLine("You are too far away to examine " + exit.Value.name + ".");
+                            Program.PrintWrappedText("You are too far away to examine " + exit.Value.name + ".");
                             adjacentZoneFound = true;
                         }
                     }
                     if (!adjacentZoneFound)
                     {
-                        Console.WriteLine("Unrecognized target.");
+                        Program.PrintWrappedText("Unrecognized target.");
                     }
                 }
             }
