@@ -50,6 +50,14 @@ namespace SimpleTextAdventure
                 case "study":
                     command = Command.Examine;
                     break;
+                case "wait":
+                    command = Command.Wait;
+                    break;
+                case "inventory":
+                case "inv":
+                case "i":
+                    command = Command.Inventory;
+                    break;
                 default:
                     command = Command.Invalid;
                     break;

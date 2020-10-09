@@ -7,12 +7,25 @@ namespace SimpleTextAdventure
     {
         public string name;
         public Zone currentZone;
-        //public List<Item> inventory;
+        public List<Item> inventory = new List<Item>();
 
         public Player(string name, Zone startingZone)
         {
             this.name = name;
             currentZone = startingZone;
+            currentZone.playerHasVisited = true;
+        }
+
+        public void PrintInventory()
+        {
+            if (inventory.Count > 0)
+            {
+                Program.PrintWrappedText("You are carrying: " + string.Join(", ", inventory));
+            }
+            else
+            {
+                Program.PrintWrappedText("You are carrying nothing.");
+            }
         }
 
         public void LookAction(Direction direction)
@@ -36,6 +49,11 @@ namespace SimpleTextAdventure
                         Program.PrintWrappedText("You move " + direction + ". ");
                         currentZone = currentZone.exits[direction];
                         Program.PrintWrappedText("You arrive at " + currentZone.name + ".");
+                        if (!currentZone.playerHasVisited)
+                        {
+                            currentZone.PrintExamineText();
+                            currentZone.playerHasVisited = true;
+                        }
                     }
                     else
                     {
@@ -59,6 +77,7 @@ namespace SimpleTextAdventure
                 }
                 else if (currentZone.codeName == parameters[0].stringParameter)
                 {
+                    Program.PrintWrappedText("You examine " + currentZone.name + ".");
                     currentZone.PrintExamineText();
                 }
                 else

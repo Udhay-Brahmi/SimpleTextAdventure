@@ -48,6 +48,7 @@ namespace SimpleTextAdventure
             // Initialize Player and Begin Game:
 
             Player player = new Player("Tabula Rasa", hall);
+            player.inventory.Add(new Item("towel", "a TOWEL", "Don't panic."));
             GameLoop gameLoop = new GameLoop(player);
             gameLoop.PlayGame();
         }

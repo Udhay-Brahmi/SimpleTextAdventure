@@ -12,6 +12,8 @@ namespace SimpleTextAdventure
         public Dictionary<Direction, Zone> exits = new Dictionary<Direction, Zone>();
         public List<Item> items = new List<Item>();
 
+        public bool playerHasVisited;
+
         public Zone(string codeName, string name, string examineText)
         {
             this.codeName = codeName;
@@ -21,7 +23,7 @@ namespace SimpleTextAdventure
 
         public void PrintExamineText()
         {
-            Program.PrintWrappedText("You examine " + name + ". " + examineText);
+            Program.PrintWrappedText(examineText);
             PrintExitDirections();
             PrintItems();
         }

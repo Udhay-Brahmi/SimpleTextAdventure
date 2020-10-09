@@ -8,6 +8,8 @@
         GameVersion,
         Look,
         Move,
-        Examine
+        Examine,
+        Wait,
+        Inventory
     }
 }

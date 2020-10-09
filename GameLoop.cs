@@ -42,6 +42,12 @@ namespace SimpleTextAdventure
                     case Command.Examine:
                         player.ExamineAction(parameters);
                         break;
+                    case Command.Wait:
+                        Program.PrintWrappedText("You wait. Nothing interesting happens.");
+                        break;
+                    case Command.Inventory:
+                        player.PrintInventory();
+                        break;
                     default:
                         Program.PrintWrappedText("Unrecognized command. Type \"help\" for a list of commands.");
                         break;
@@ -51,9 +57,9 @@ namespace SimpleTextAdventure
 
         void PrintGameHelp()
         {
-            Program.PrintWrappedText("List of Commands: quit, help, version, look, move / go, examine.");
+            Program.PrintWrappedText("List of Commands: quit, help, version, look, move / go, examine, wait, inventory.");
             Program.PrintWrappedText("Commands with Parameters: look <direction>, move <direction>, examine <target>");
-            Program.PrintWrappedText("Quick Commands: l (look), n (north / move north), etc.");
+            Program.PrintWrappedText("Quick Commands: l (look), i (inventory), n (north / move north), etc.");
         }
 
         void PrintGameVersion()
