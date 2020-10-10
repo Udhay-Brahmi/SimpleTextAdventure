@@ -24,6 +24,8 @@ namespace SimpleTextAdventure
                     command = Command.GameHelp;
                     break;
                 case "version":
+                case "about":
+                case "info":
                     command = Command.GameVersion;
                     break;
                 case "look":
@@ -57,6 +59,16 @@ namespace SimpleTextAdventure
                 case "inv":
                 case "i":
                     command = Command.Inventory;
+                    break;
+                case "take":
+                case "get":
+                case "grab":
+                    command = Command.Take;
+                    break;
+                case "drop":
+                case "put":
+                case "set":
+                    command = Command.Drop;
                     break;
                 default:
                     command = Command.Invalid;

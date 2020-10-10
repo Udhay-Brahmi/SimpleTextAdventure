@@ -98,5 +98,105 @@ namespace SimpleTextAdventure
                 }
             }
         }
+
+        bool TryFindTarget(Parameter[] parameters, out Parameter result)
+        {
+            if (parameters == null || parameters.Length == 0 || parameters[0].type != ParameterType.String)
+            {
+                result = new Parameter("");
+                return false;
+            }
+
+            if (parameters[0].stringParameter == currentZone.name)
+            {
+                result = new Parameter(currentZone);
+                return true;
+            }
+
+            foreach (KeyValuePair<Direction, Zone> exit in currentZone.exits)
+            {
+                if (exit.Value.codeName == parameters[0].stringParameter)
+                {
+                    result = new Parameter(currentZone.exits[exit.Key]);
+                    return true;
+                }
+            }
+
+            foreach (Item item in inventory)
+            {
+                if (item.codeName == parameters[0].stringParameter)
+                {
+                    result = new Parameter(item);
+                    return true;
+                }
+            }
+
+            foreach (Item item in currentZone.items)
+            {
+                if (item.codeName == parameters[0].stringParameter)
+                {
+                    result = new Parameter(item);
+                    return true;
+                }
+            }
+
+            result = parameters[0];
+            return false;
+        }
+
+        List<Item> LocateItem(Item item)
+        {
+            if (inventory.Contains(item))
+            {
+                return inventory;
+            }
+            else if (currentZone.items.Contains(item))
+            {
+                return currentZone.items;
+            }
+            else return null;
+        }
+
+        public void TakeAction(Parameter[] parameters)
+        {
+            if (TryFindTarget(parameters, out Parameter target) && target.type == ParameterType.Item)
+            {
+                if (LocateItem(target.itemParameter) == currentZone.items)
+                {
+                    inventory.Add(target.itemParameter);
+                    currentZone.items.Remove(target.itemParameter);
+                    Program.PrintWrappedText("You take " + target.itemParameter.name + ".");
+                }
+                else
+                {
+                    Program.PrintWrappedText("That item is not somewhere you can take it.");
+                }
+            }
+            else
+            {
+                Program.PrintWrappedText("Not a valid target.");
+            }
+        }
+
+        public void DropAction(Parameter[] parameters)
+        {
+            if (TryFindTarget(parameters, out Parameter target) && target.type == ParameterType.Item)
+            {
+                if (LocateItem(target.itemParameter) == inventory)
+                {
+                    currentZone.items.Add(target.itemParameter);
+                    inventory.Remove(target.itemParameter);
+                    Program.PrintWrappedText("You drop " + target.itemParameter.name + ".");
+                }
+                else
+                {
+                    Program.PrintWrappedText("You aren't carrying that item.");
+                }
+            }
+            else
+            {
+                Program.PrintWrappedText("Not a valid target.");
+            }
+        }
     }
 }

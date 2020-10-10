@@ -48,6 +48,12 @@ namespace SimpleTextAdventure
                     case Command.Inventory:
                         player.PrintInventory();
                         break;
+                    case Command.Take:
+                        player.TakeAction(parameters);
+                        break;
+                    case Command.Drop:
+                        player.DropAction(parameters);
+                        break;
                     default:
                         Program.PrintWrappedText("Unrecognized command. Type \"help\" for a list of commands.");
                         break;

@@ -10,6 +10,8 @@
         Move,
         Examine,
         Wait,
-        Inventory
+        Inventory,
+        Take,
+        Drop
     }
 }
