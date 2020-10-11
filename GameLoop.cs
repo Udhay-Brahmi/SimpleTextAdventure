@@ -63,8 +63,8 @@ namespace SimpleTextAdventure
 
         void PrintGameHelp()
         {
-            Program.PrintWrappedText("List of Commands: quit, help, version, look, move / go, examine, wait, inventory.");
-            Program.PrintWrappedText("Commands with Parameters: look <direction>, move <direction>, examine <target>");
+            Program.PrintWrappedText("List of Commands: quit, help, version, look, move / go, examine, wait, inventory, take, drop.");
+            Program.PrintWrappedText("Commands with Parameters: look <direction>, move <direction>, examine <target>, take <item>, drop <item>.");
             Program.PrintWrappedText("Quick Commands: l (look), i (inventory), n (north / move north), etc.");
         }
 

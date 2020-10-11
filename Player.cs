@@ -75,6 +75,16 @@ namespace SimpleTextAdventure
                 {
                     currentZone.items[0].PrintExamineText();
                 }
+                else if (inventory.Count > 0)
+                {
+                    foreach (Item item in inventory)
+                    {
+                        if (item.codeName == parameters[0].stringParameter)
+                        {
+                            item.PrintExamineText();
+                        }
+                    }
+                }
                 else if (currentZone.codeName == parameters[0].stringParameter)
                 {
                     Program.PrintWrappedText("You examine " + currentZone.name + ".");
@@ -105,6 +115,12 @@ namespace SimpleTextAdventure
             {
                 result = new Parameter("");
                 return false;
+            }
+
+            if (parameters[0].stringParameter == "all")
+            {
+                result = new Parameter("all");
+                return true;
             }
 
             if (parameters[0].stringParameter == currentZone.name)
@@ -172,6 +188,22 @@ namespace SimpleTextAdventure
                     Program.PrintWrappedText("That item is not somewhere you can take it.");
                 }
             }
+            else if (target.stringParameter == "all")
+            {
+                if (currentZone.items.Count > 0)
+                {
+                    while (currentZone.items.Count > 0)
+                    {
+                        inventory.Add(currentZone.items[0]);
+                        currentZone.items.Remove(currentZone.items[0]);
+                    }
+                    Program.PrintWrappedText("You take all the items in this area.");
+                }
+                else
+                {
+                    Program.PrintWrappedText("There are no items to take.");
+                }
+            }
             else
             {
                 Program.PrintWrappedText("Not a valid target.");
@@ -191,6 +223,22 @@ namespace SimpleTextAdventure
                 else
                 {
                     Program.PrintWrappedText("You aren't carrying that item.");
+                }
+            }
+            else if (target.stringParameter == "all")
+            {
+                if (inventory.Count > 0)
+                {
+                    while (inventory.Count > 0)
+                    {
+                        currentZone.items.Add(inventory[0]);
+                        inventory.Remove(inventory[0]);
+                    }
+                    Program.PrintWrappedText("You drop all the items you were carrying.");
+                }
+                else
+                {
+                    Program.PrintWrappedText("You are carrying no items.");
                 }
             }
             else
