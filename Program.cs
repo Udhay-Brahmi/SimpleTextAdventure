@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Xml.Linq;
 
 namespace SimpleTextAdventure
 {
@@ -15,40 +18,73 @@ namespace SimpleTextAdventure
         {
             Console.Title = gameName + " by " + gameAuthor;
 
-            // Create Zones And Items:
+            XElement worldData = XElement.Load("World.xml");
 
-            Zone study = new Zone("study", "the STUDY", "A spacious office with a large desk and a fireplace.");
-            Zone billiard = new Zone("billiard", "the BILLIARD Room", "A gaming room featuring a billiard table.");
-            Zone lounge = new Zone("lounge", "the LOUNGE", "A relaxing space.");
-            Zone library = new Zone("library", "the LIBRARY", "The walls are lined with bookcases.");
-            Zone hall = new Zone("hall", "the HALL", "The main hall of the building.");
-            Zone dining = new Zone("dining", "the DINING Room", "The large dining table could seat six or seven.");
-            Zone conservatory = new Zone("conservatory", "the CONSERVATORY", "A humid sunroom with a variety of plants.");
-            Zone ballroom = new Zone("ballroom", "the BALLROOM", "An opulent ballroom, empty save for a grand piano.");
-            Zone kitchen = new Zone("kitchen", "the KITCHEN", "Yep. It's a kitchen.");
+            List<XElement> zonesData = worldData.Elements().Where(x => x.Name == "Zones").ToList()[0].Elements().ToList();
+            List<Zone> zoneList = new List<Zone>();
+            foreach (XElement zone in zonesData)
+            {
+                string nameData = zone.Attribute("Name").Value;
+                if (nameData.IndexOf('#') < 0) Program.PrintErrorAndExit("XML: Error in Zone Name Data");
+                string name = nameData.Substring(0, nameData.IndexOf('#')) + nameData.Substring(nameData.IndexOf('#') + 1);
+                string codeName = "";
+                for (int i = nameData.IndexOf('#') + 1; i < nameData.Length; i++)
+                {
+                    if (char.IsWhiteSpace(nameData[i])) break;
+                    codeName += nameData[i];
+                }
+                string examineText = zone.Value;
+                zoneList.Add(new Zone(codeName, name, examineText));
+            }
 
-            Zone.ConnectZones(study, Direction.East, billiard);
-            Zone.ConnectZones(billiard, Direction.East, lounge);
-            Zone.ConnectZones(study, Direction.South, library);
-            Zone.ConnectZones(billiard, Direction.South, hall);
-            Zone.ConnectZones(lounge, Direction.South, dining);
-            Zone.ConnectZones(library, Direction.East, hall);
-            Zone.ConnectZones(hall, Direction.East, dining);
-            Zone.ConnectZones(hall, Direction.South, ballroom);
-            Zone.ConnectZones(dining, Direction.South, kitchen);
-            Zone.ConnectZones(conservatory, Direction.East, ballroom);
+            string startingZoneName = worldData.Element("StartingZone").Value;
+            Zone startingZone = zoneList.FirstOrDefault(x => x.codeName.ToLower() == startingZoneName.ToLower());
+            if (startingZone == null) Program.PrintErrorAndExit("XML: Error in Starting Zone Data");
 
-            study.items.Add(new Item("pipe", "a heavy lead PIPE", "A section of old bent pipe made of lead. Fairly heavy."));
-            lounge.items.Add(new Item("rope", "a length of ROPE", "A short length of sturdy rope with some fraying near the middle."));
-            library.items.Add(new Item("revolver", "a REVOLVER", "A handgun with a six-chamber cylinder. One round has already been fired."));
-            conservatory.items.Add(new Item("wrench", "a large WRENCH", "A very large wrench with some damage. Looks like it was dropped."));
-            ballroom.items.Add(new Item("candlestick", "a hefty CANDLESTICK", "A large golden candlestick. It was cleaned recently."));
-            kitchen.items.Add(new Item("knife", "a sharp KNIFE", "A dagger with a long sharp blade. The very tip is broken off."));
+            List<XElement> connectionsData = worldData.Elements().Where(x => x.Name == "ZoneConnections").ToList()[0].Elements().ToList();
+            foreach (XElement connection in connectionsData)
+            {
+                string start = connection.Attribute("Start").Value;
+                string directionName = connection.Attribute("Direction").Value;
+                string end = connection.Attribute("End").Value;
 
-            // Initialize Player and Begin Game:
+                Zone startZone = zoneList.FirstOrDefault(x => x.codeName.ToLower() == start.ToLower());
+                Zone endZone = zoneList.FirstOrDefault(x => x.codeName.ToLower() == end.ToLower());
+                Direction moveDirection = 0;
+                if (startZone == null || endZone == null || !Parser.TryParseDirection(directionName, out moveDirection)) Program.PrintErrorAndExit("XML: Error in Zone Connection Data");
 
-            Player player = new Player("Tabula Rasa", hall);
-            player.inventory.Add(new Item("towel", "a TOWEL", "Don't panic."));
+                Zone.ConnectZones(startZone, moveDirection, endZone);
+            }
+
+            Player player = new Player("Tabula Rasa", startingZone);
+
+            List<XElement> itemData = worldData.Elements().Where(x => x.Name == "Items").ToList()[0].Elements().ToList();
+            foreach (XElement item in itemData)
+            {
+                string nameData = item.Attribute("Name").Value;
+                if (nameData.IndexOf('#') < 0) Program.PrintErrorAndExit("XML: Error in Item Name Data");
+                string name = nameData.Substring(0, nameData.IndexOf('#')) + nameData.Substring(nameData.IndexOf('#') + 1);
+                string codeName = "";
+                for (int i = nameData.IndexOf('#') + 1; i < nameData.Length; i++)
+                {
+                    if (char.IsWhiteSpace(nameData[i])) break;
+                    codeName += nameData[i];
+                }
+                string examineText = item.Value;
+
+                if (item.Attribute("StartLocation").Value == "PLAYER")
+                {
+                    player.inventory.Add(new Item(codeName, name, examineText));
+                }
+                else
+                {
+                    string zoneCodeName = item.Attribute("StartLocation").Value;
+                    Zone itemZone = zoneList.FirstOrDefault(x => x.codeName.ToLower() == zoneCodeName.ToLower());
+                    if (itemZone == null) Program.PrintErrorAndExit("XML: Error in Item Zone Data");
+                    itemZone.items.Add(new Item(codeName, name, examineText));
+                }
+            }
+            
             GameLoop gameLoop = new GameLoop(player);
             gameLoop.PlayGame();
         }

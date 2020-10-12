@@ -15,6 +15,9 @@ namespace SimpleTextAdventure
         public void PlayGame()
         {
             Program.PrintWrappedText("Introduction text. Type a command.");
+            Console.WriteLine();
+            Program.PrintWrappedText("You are in " + player.currentZone.name + ".");
+            player.currentZone.PrintExamineText();
 
             while (true)
             {

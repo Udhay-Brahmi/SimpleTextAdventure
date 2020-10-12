@@ -71,9 +71,15 @@ namespace SimpleTextAdventure
             }
             else
             {
-                if (currentZone.items.Count > 0 && currentZone.items[0].codeName == parameters[0].stringParameter)
+                if (currentZone.items.Count > 0)
                 {
-                    currentZone.items[0].PrintExamineText();
+                    foreach (Item item in currentZone.items)
+                    {
+                        if (item.codeName == parameters[0].stringParameter)
+                        {
+                            item.PrintExamineText();
+                        }
+                    }
                 }
                 else if (inventory.Count > 0)
                 {

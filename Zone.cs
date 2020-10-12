@@ -16,7 +16,7 @@ namespace SimpleTextAdventure
 
         public Zone(string codeName, string name, string examineText)
         {
-            this.codeName = codeName;
+            this.codeName = codeName.ToLower();
             this.name = name;
             this.examineText = examineText;
         }

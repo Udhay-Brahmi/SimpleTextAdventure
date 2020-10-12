@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Root>
+  <Zones>
+    <Zone Name="the #STUDY">A spacious office with a large desk and a fireplace.</Zone>
+    <Zone Name="the #BILLIARD room">A gaming room featuring a billiard table.</Zone>
+    <Zone Name="the #LOUNGE">A relaxing space.</Zone>
+    <Zone Name="the #LIBRARY">The walls are lined with bookcases.</Zone>
+    <Zone Name="the #HALL">The main hall of the building.</Zone>
+    <Zone Name="the #DINING room">The large dining table could seat six or seven.</Zone>
+    <Zone Name="the #CONSERVATORY">A humid sunroom with a variety of plants.</Zone>
+    <Zone Name="the #BALLROOM">An opulent ballroom, empty save for a grand piano.</Zone>
+    <Zone Name="the #KITCHEN">Yep. It's a kitchen.</Zone>
+  </Zones>
+  <StartingZone>HALL</StartingZone>
+  <ZoneConnections>
+    <Connection Start="STUDY" Direction="East" End="BILLIARD" />
+    <Connection Start="BILLIARD" Direction="East" End="LOUNGE" />
+    <Connection Start="STUDY" Direction="South" End="LIBRARY" />
+    <Connection Start="BILLIARD" Direction="South" End="HALL" />
+    <Connection Start="LOUNGE" Direction="South" End="DINING" />
+    <Connection Start="LIBRARY" Direction="East" End="HALL" />
+    <Connection Start="HALL" Direction="East" End="DINING" />
+    <Connection Start="HALL" Direction="South" End="BALLROOM" />
+    <Connection Start="DINING" Direction="South" End="KITCHEN" />
+    <Connection Start="CONSERVATORY" Direction="East" End="BALLROOM" />
+  </ZoneConnections>
+  <Items>
+    <Item Name="a heavy lead #PIPE" StartLocation="STUDY">A section of old bent pipe made of lead. Fairly heavy.</Item>
+    <Item Name="a length of #ROPE" StartLocation="LOUNGE">A short length of sturdy rope with some fraying near the middle.</Item>
+    <Item Name="a #REVOLVER" StartLocation="LIBRARY">A handgun with a six-chamber cylinder. One round has already been fired.</Item>
+    <Item Name="a large #WRENCH" StartLocation="CONSERVATORY">A very large wrench with some damage. Looks like it was dropped.</Item>
+    <Item Name="a hefty #CANDLESTICK" StartLocation="BALLROOM">A large golden candlestick. It was cleaned recently.</Item>
+    <Item Name="a sharp #KNIFE" StartLocation="KITCHEN">A dagger with a long sharp blade. The very tip is broken off.</Item>
+    <Item Name="a #TOWEL" StartLocation="PLAYER">Don't panic.</Item>
+  </Items>
+</Root>
