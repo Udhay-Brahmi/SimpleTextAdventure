@@ -57,8 +57,10 @@ namespace SimpleTextAdventure
             }
 
             Player player = new Player("Tabula Rasa", startingZone);
+            GameLoop gameLoop = new GameLoop(player);
 
             List<XElement> itemData = worldData.Elements().Where(x => x.Name == "Items").ToList()[0].Elements().ToList();
+            List<XtoY> itemsXtoY = new List<XtoY>();
             foreach (XElement item in itemData)
             {
                 string nameData = item.Attribute("Name").Value;
@@ -71,21 +73,42 @@ namespace SimpleTextAdventure
                     codeName += nameData[i];
                 }
                 string examineText = item.Value;
+                string itemType = item.Attribute("Type").Value;
+
+                Item newItem;
+                if (itemType == "XtoY")
+                {
+                    newItem = new XtoY(codeName, name, examineText, gameLoop, item.Attribute("Y").Value, item.Attribute("UseMessage").Value);
+                    itemsXtoY.Add((XtoY)newItem);
+                }
+                else
+                {
+                    newItem = new Item(codeName, name, examineText);
+                }
 
                 if (item.Attribute("StartLocation").Value == "PLAYER")
                 {
-                    player.inventory.Add(new Item(codeName, name, examineText));
+                    player.inventory.Add(newItem);
+                }
+                else if (item.Attribute("StartLocation").Value == "NONE")
+                {
+                    gameLoop.inactiveItems.Add(newItem);
                 }
                 else
                 {
                     string zoneCodeName = item.Attribute("StartLocation").Value;
                     Zone itemZone = zoneList.FirstOrDefault(x => x.codeName.ToLower() == zoneCodeName.ToLower());
                     if (itemZone == null) Program.PrintErrorAndExit("XML: Error in Item Zone Data");
-                    itemZone.items.Add(new Item(codeName, name, examineText));
+                    itemZone.items.Add(newItem);
                 }
             }
-            
-            GameLoop gameLoop = new GameLoop(player);
+            foreach (XtoY itemX in itemsXtoY)
+            {
+                XtoY itemY = itemsXtoY.FirstOrDefault(x => x.codeName == itemX.Y);
+                if (itemY == null) Program.PrintErrorAndExit("XML: Error in Item Connections");
+                itemX.itemY = itemY;
+            }
+
             gameLoop.PlayGame();
         }
 

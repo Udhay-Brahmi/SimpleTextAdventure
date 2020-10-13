@@ -12,6 +12,7 @@
         Wait,
         Inventory,
         Take,
-        Drop
+        Drop,
+        Use
     }
 }

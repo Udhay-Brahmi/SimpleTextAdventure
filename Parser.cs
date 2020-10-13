@@ -70,6 +70,9 @@ namespace SimpleTextAdventure
                 case "set":
                     command = Command.Drop;
                     break;
+                case "use":
+                    command = Command.Use;
+                    break;
                 default:
                     command = Command.Invalid;
                     break;

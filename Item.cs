@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace SimpleTextAdventure
 {
@@ -23,6 +24,11 @@ namespace SimpleTextAdventure
         public void PrintExamineText()
         {
             Program.PrintWrappedText(examineText);
+        }
+
+        public virtual void UseItem(List<Item> inventory)
+        {
+            Program.PrintWrappedText("Nothing interesting happens.");
         }
     }
 }

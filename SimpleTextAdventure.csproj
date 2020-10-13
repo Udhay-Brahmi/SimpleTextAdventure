@@ -51,6 +51,7 @@
     <Compile Include="ParameterType.cs" />
     <Compile Include="Parser.cs" />
     <Compile Include="Player.cs" />
+    <Compile Include="ItemTypes\XtoY.cs" />
     <Compile Include="Zone.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -63,5 +64,6 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

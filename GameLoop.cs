@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace SimpleTextAdventure
 {
@@ -6,6 +7,7 @@ namespace SimpleTextAdventure
     {
         readonly Player player;
         int commandNumber;
+        public List<Item> inactiveItems = new List<Item>();
 
         public GameLoop(Player player)
         {
@@ -56,6 +58,9 @@ namespace SimpleTextAdventure
                         break;
                     case Command.Drop:
                         player.DropAction(parameters);
+                        break;
+                    case Command.Use:
+                        player.UseAction(parameters);
                         break;
                     default:
                         Program.PrintWrappedText("Unrecognized command. Type \"help\" for a list of commands.");

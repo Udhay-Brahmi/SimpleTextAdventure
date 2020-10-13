@@ -71,6 +71,7 @@ namespace SimpleTextAdventure
             }
             else
             {
+                bool targetFound = false;
                 if (currentZone.items.Count > 0)
                 {
                     foreach (Item item in currentZone.items)
@@ -78,39 +79,38 @@ namespace SimpleTextAdventure
                         if (item.codeName == parameters[0].stringParameter)
                         {
                             item.PrintExamineText();
+                            targetFound = true;
                         }
                     }
                 }
-                else if (inventory.Count > 0)
+                if (inventory.Count > 0)
                 {
                     foreach (Item item in inventory)
                     {
                         if (item.codeName == parameters[0].stringParameter)
                         {
                             item.PrintExamineText();
+                            targetFound = true;
                         }
                     }
                 }
-                else if (currentZone.codeName == parameters[0].stringParameter)
+                if (currentZone.codeName == parameters[0].stringParameter)
                 {
                     Program.PrintWrappedText("You examine " + currentZone.name + ".");
                     currentZone.PrintExamineText();
+                    targetFound = true;
                 }
-                else
+                foreach (KeyValuePair<Direction, Zone> exit in currentZone.exits)
                 {
-                    bool adjacentZoneFound = false;
-                    foreach (KeyValuePair<Direction,Zone> exit in currentZone.exits)
+                    if (exit.Value.codeName == parameters[0].stringParameter)
                     {
-                        if (exit.Value.codeName == parameters[0].stringParameter)
-                        {
-                            Program.PrintWrappedText("You are too far away to examine " + exit.Value.name + ".");
-                            adjacentZoneFound = true;
-                        }
+                        Program.PrintWrappedText("You are too far away to examine " + exit.Value.name + ".");
+                        targetFound = true;
                     }
-                    if (!adjacentZoneFound)
-                    {
-                        Program.PrintWrappedText("Unrecognized target.");
-                    }
+                }
+                if (!targetFound)
+                {
+                    Program.PrintWrappedText("Unrecognized target.");
                 }
             }
         }
@@ -245,6 +245,25 @@ namespace SimpleTextAdventure
                 else
                 {
                     Program.PrintWrappedText("You are carrying no items.");
+                }
+            }
+            else
+            {
+                Program.PrintWrappedText("Not a valid target.");
+            }
+        }
+
+        public void UseAction(Parameter[] parameters)
+        {
+            if (TryFindTarget(parameters, out Parameter target) && target.type == ParameterType.Item)
+            {
+                if (LocateItem(target.itemParameter) == inventory)
+                {
+                    target.itemParameter.UseItem(inventory);
+                }
+                else
+                {
+                    Program.PrintWrappedText("You aren't carrying that item.");
                 }
             }
             else
