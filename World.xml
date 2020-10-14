@@ -25,12 +25,14 @@
     <Connection Start="CONSERVATORY" Direction="East" End="BALLROOM" />
   </ZoneConnections>
   <Items>
-    <Item Name="a heavy lead #PIPE" StartLocation="STUDY" Type="XtoY" Y="TOWEL" UseMessage="The pipe turns into a towel.">A section of old bent pipe made of lead. Fairly heavy.</Item>
+    <Item Name="an unlit #LAMP" StartLocation="DINING" Type="XtoY" Y="LANTERN" UseMessage="You light the lamp. We'll call it a LANTERN now.">A device that can be used as a light source</Item>
+    <Item Name="a lit #LANTERN" StartLocation="NONE" Type="XtoY" Y="LAMP" UseMessage="You darken the lantern. We'll call it a LAMP now.">A bright light source.</Item>
+    <Item Name="a heavy lead #PIPE" StartLocation="STUDY" Type="X">A section of old bent pipe made of lead. Fairly heavy.</Item>
     <Item Name="a length of #ROPE" StartLocation="LOUNGE" Type="X">A short length of sturdy rope with some fraying near the middle.</Item>
     <Item Name="a #REVOLVER" StartLocation="LIBRARY" Type="X">A handgun with a six-chamber cylinder. One round has already been fired.</Item>
     <Item Name="a large #WRENCH" StartLocation="CONSERVATORY" Type="X">A very large wrench with some damage. Looks like it was dropped.</Item>
     <Item Name="a hefty #CANDLESTICK" StartLocation="BALLROOM" Type="X">A large golden candlestick. It was cleaned recently.</Item>
     <Item Name="a sharp #KNIFE" StartLocation="KITCHEN" Type="X">A dagger with a long sharp blade. The very tip is broken off.</Item>
-    <Item Name="a #TOWEL" StartLocation="NONE" Type="XtoY" Y="PIPE" UseMessage="The towel turns into a pipe.">Don't panic.</Item>
+    <Item Name="a #TOWEL" StartLocation="PLAYER" Type="X">Don't panic.</Item>
   </Items>
 </Root>

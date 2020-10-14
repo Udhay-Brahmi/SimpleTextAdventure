@@ -16,12 +16,13 @@ namespace SimpleTextAdventure
 
         public void PlayGame()
         {
-            Program.PrintWrappedText("Introduction text. Type a command.");
+            Program.PrintWrappedText("Goal: take all the items to the study.");
             Console.WriteLine();
             Program.PrintWrappedText("You are in " + player.currentZone.name + ".");
             player.currentZone.PrintExamineText();
-
-            while (true)
+            
+            bool gameOver = false;
+            while (!gameOver)
             {
                 commandNumber++;
                 Console.Write(Environment.NewLine + "[" + commandNumber + "] > ");
@@ -66,13 +67,26 @@ namespace SimpleTextAdventure
                         Program.PrintWrappedText("Unrecognized command. Type \"help\" for a list of commands.");
                         break;
                 }
-            }
-        }
 
+                // Example game over condition:
+                if (player.currentZone.codeName == "study" && (player.inventory.Count + player.currentZone.items.Count) >= 8)
+                {
+                    gameOver = true;
+                    Console.WriteLine();
+                    Program.PrintWrappedText("You have brought all the items to the study.");
+                }
+            }
+
+            Console.WriteLine();
+            Program.PrintWrappedText("GAME OVER");
+            Console.Write("Press any key to exit");
+            Console.ReadKey(true);
+        }
+        
         void PrintGameHelp()
         {
-            Program.PrintWrappedText("List of Commands: quit, help, version, look, move / go, examine, wait, inventory, take, drop.");
-            Program.PrintWrappedText("Commands with Parameters: look <direction>, move <direction>, examine <target>, take <item>, drop <item>.");
+            Program.PrintWrappedText("List of Commands: quit, help, version, look, move / go, examine, wait, inventory, take, drop, use.");
+            Program.PrintWrappedText("Commands with Parameters: look <direction>, move <direction>, examine <target>, take <item>, drop <item>, use <item>.");
             Program.PrintWrappedText("Quick Commands: l (look), i (inventory), n (north / move north), etc.");
         }
 

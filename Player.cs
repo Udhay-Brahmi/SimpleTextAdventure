@@ -18,13 +18,17 @@ namespace SimpleTextAdventure
 
         public void PrintInventory()
         {
-            if (inventory.Count > 0)
+            if (inventory.Count == 0)
             {
-                Program.PrintWrappedText("You are carrying: " + string.Join(", ", inventory));
+                Program.PrintWrappedText("You are carrying nothing.");
+            }
+            else if (inventory.Count == 1)
+            {
+                Program.PrintWrappedText("You are carrying 1 item: " + string.Join(", ", inventory));
             }
             else
             {
-                Program.PrintWrappedText("You are carrying nothing.");
+                Program.PrintWrappedText("You are carrying " + inventory.Count + " items: " + string.Join(", ", inventory));
             }
         }
 
