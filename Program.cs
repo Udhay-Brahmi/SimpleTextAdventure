@@ -9,7 +9,7 @@ namespace SimpleTextAdventure
     {
         public static string gameName = "SimpleTextAdventure";
         public static string gameAuthor = "Nonparoxysmic";
-        public static string gameVersion = "Alpha 0.0";
+        public static string gameVersion = "Alpha 0.0_1";
 
         static readonly string wrappingIndent = "  ";
         static readonly bool indentFirstLine = false;
@@ -60,7 +60,7 @@ namespace SimpleTextAdventure
             GameLoop gameLoop = new GameLoop(player);
 
             List<XElement> itemData = worldData.Elements().Where(x => x.Name == "Items").ToList()[0].Elements().ToList();
-            List<XtoY> itemsXtoY = new List<XtoY>();
+            List<Item> itemsForItemReferences = new List<Item>();
             foreach (XElement item in itemData)
             {
                 string nameData = item.Attribute("Name").Value;
@@ -79,13 +79,23 @@ namespace SimpleTextAdventure
                 if (itemType == "XtoY")
                 {
                     newItem = new XtoY(codeName, name, examineText, gameLoop, item.Attribute("Y").Value, item.Attribute("UseMessage").Value);
-                    itemsXtoY.Add((XtoY)newItem);
+                    itemsForItemReferences.Add(newItem);
+                }
+                else if (itemType == "XtoYZ")
+                {
+                    newItem = new XtoYZ(codeName, name, examineText, gameLoop, item.Attribute("Y").Value, item.Attribute("Z").Value, item.Attribute("UseMessage").Value);
+                    itemsForItemReferences.Add(newItem);
+                }
+                else if (itemType == "toX")
+                {
+                    newItem = new Item("toX", codeName, name, examineText);
+                    itemsForItemReferences.Add(newItem);
                 }
                 else
                 {
-                    newItem = new Item(codeName, name, examineText);
+                    newItem = new Item("X", codeName, name, examineText);
                 }
-
+                
                 if (item.Attribute("StartLocation").Value == "PLAYER")
                 {
                     player.inventory.Add(newItem);
@@ -102,11 +112,23 @@ namespace SimpleTextAdventure
                     itemZone.items.Add(newItem);
                 }
             }
-            foreach (XtoY itemX in itemsXtoY)
+            foreach (Item itemX in itemsForItemReferences)
             {
-                XtoY itemY = itemsXtoY.FirstOrDefault(x => x.codeName == itemX.Y);
-                if (itemY == null) Program.PrintErrorAndExit("XML: Error in Item Connections");
-                itemX.itemY = itemY;
+                if (itemX.type == "XtoY")
+                {
+                    Item itemY = itemsForItemReferences.FirstOrDefault(x => x.codeName == (itemX as XtoY).Y);
+                    if (itemY == null) Program.PrintErrorAndExit("XML: Error in Item Connections");
+                    (itemX as XtoY).itemY = itemY;
+                }
+                else if (itemX.type == "XtoYZ")
+                {
+                    Item itemY = itemsForItemReferences.FirstOrDefault(x => x.codeName == (itemX as XtoYZ).Y);
+                    if (itemY == null) Program.PrintErrorAndExit("XML: Error in Item Connections");
+                    (itemX as XtoYZ).itemY = itemY;
+                    Item itemZ = itemsForItemReferences.FirstOrDefault(x => x.codeName == (itemX as XtoYZ).Z);
+                    if (itemZ == null) Program.PrintErrorAndExit("XML: Error in Item Connections");
+                    (itemX as XtoYZ).itemZ = itemZ;
+                }
             }
 
             gameLoop.PlayGame();

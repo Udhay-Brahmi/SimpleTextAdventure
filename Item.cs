@@ -8,9 +8,11 @@ namespace SimpleTextAdventure
         public string codeName;
         public string name;
         public string examineText;
+        public string type;
 
-        public Item(string codeName, string name, string examineText)
+        public Item(string type, string codeName, string name, string examineText)
         {
+            this.type = type;
             this.codeName = codeName.ToLower();
             this.name = name;
             this.examineText = examineText;
