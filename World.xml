@@ -27,11 +27,12 @@
   <Items>
     <Item Name="an unlit #LAMP" StartLocation="DINING" Type="XtoY" Y="LANTERN" UseMessage="You light the lamp. We'll call it a LANTERN now.">A device that can be used as a light source</Item>
     <Item Name="a lit #LANTERN" StartLocation="NONE" Type="XtoY" Y="LAMP" UseMessage="You darken the lantern. We'll call it a LAMP now.">A bright light source.</Item>
-    <Item Name="a heavy lead #PIPE" StartLocation="STUDY" Type="X">A section of old bent pipe made of lead. Fairly heavy.</Item>
-    <Item Name="a length of #ROPE" StartLocation="LOUNGE" Type="X">A short length of sturdy rope with some fraying near the middle.</Item>
+    <Item Name="a heavy lead #PIPE" StartLocation="STUDY" Type="XYtoZ" Y="ROPE" Z="BAR" CombineMessage="You wrap the rope around the pipe.">A section of old bent pipe made of lead. Fairly heavy.</Item>
+    <Item Name="a length of #ROPE" StartLocation="LOUNGE" Type="XYtoZ" Y="PIPE" Z="BAR" CombineMessage="You wrap the rope around the pipe.">A short length of sturdy rope with some fraying near the middle.</Item>
+    <Item Name="a rope-wrapped #BAR" StartLocation="NONE" Type="toX">A piece of pipe with a rope wrapped around it.</Item>
     <Item Name="a #REVOLVER" StartLocation="LIBRARY" Type="XtoYZ" Y="GUN" Z="BULLETS" UseMessage="You unload the revolver and separate the GUN and BULLETS.">A handgun with a six-chamber cylinder. One round has already been fired.</Item>
-    <Item Name="an empty #GUN" StartLocation="NONE" Type="toX">A fully unloaded handgun with a six-chamber cylinder.</Item>
-    <Item Name="five #BULLETS" StartLocation="NONE" Type="toX">A small handfull of bullets.</Item>
+    <Item Name="an empty #GUN" StartLocation="NONE" Type="XYtoZ" Y="BULLETS" Z="REVOLVER" CombineMessage="You load the bullets into the revolver.">A fully unloaded handgun with a six-chamber cylinder.</Item>
+    <Item Name="five #BULLETS" StartLocation="NONE" Type="XYtoZ" Y="GUN" Z="REVOLVER" CombineMessage="You load the bullets into the revolver.">A small handfull of bullets.</Item>
     <Item Name="a large #WRENCH" StartLocation="CONSERVATORY" Type="X">A very large wrench with some damage. Looks like it was dropped.</Item>
     <Item Name="a hefty #CANDLESTICK" StartLocation="BALLROOM" Type="X">A large golden candlestick. It was cleaned recently.</Item>
     <Item Name="a sharp #KNIFE" StartLocation="KITCHEN" Type="X">A dagger with a long sharp blade. The very tip is broken off.</Item>

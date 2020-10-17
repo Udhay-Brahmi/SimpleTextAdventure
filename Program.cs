@@ -9,7 +9,7 @@ namespace SimpleTextAdventure
     {
         public static string gameName = "SimpleTextAdventure";
         public static string gameAuthor = "Nonparoxysmic";
-        public static string gameVersion = "Alpha 0.0_1";
+        public static string gameVersion = "Alpha 0.0_2";
 
         static readonly string wrappingIndent = "  ";
         static readonly bool indentFirstLine = false;
@@ -20,7 +20,7 @@ namespace SimpleTextAdventure
 
             XElement worldData = XElement.Load("World.xml");
 
-            List<XElement> zonesData = worldData.Elements().Where(x => x.Name == "Zones").ToList()[0].Elements().ToList();
+            List<XElement> zonesData = worldData.Elements().FirstOrDefault(x => x.Name == "Zones").Elements().ToList();
             List<Zone> zoneList = new List<Zone>();
             foreach (XElement zone in zonesData)
             {
@@ -41,7 +41,7 @@ namespace SimpleTextAdventure
             Zone startingZone = zoneList.FirstOrDefault(x => x.codeName.ToLower() == startingZoneName.ToLower());
             if (startingZone == null) Program.PrintErrorAndExit("XML: Error in Starting Zone Data");
 
-            List<XElement> connectionsData = worldData.Elements().Where(x => x.Name == "ZoneConnections").ToList()[0].Elements().ToList();
+            List<XElement> connectionsData = worldData.Elements().FirstOrDefault(x => x.Name == "ZoneConnections").Elements().ToList();
             foreach (XElement connection in connectionsData)
             {
                 string start = connection.Attribute("Start").Value;
@@ -59,7 +59,7 @@ namespace SimpleTextAdventure
             Player player = new Player("Tabula Rasa", startingZone);
             GameLoop gameLoop = new GameLoop(player);
 
-            List<XElement> itemData = worldData.Elements().Where(x => x.Name == "Items").ToList()[0].Elements().ToList();
+            List<XElement> itemData = worldData.Elements().FirstOrDefault(x => x.Name == "Items").Elements().ToList();
             List<Item> itemsForItemReferences = new List<Item>();
             foreach (XElement item in itemData)
             {
@@ -84,6 +84,11 @@ namespace SimpleTextAdventure
                 else if (itemType == "XtoYZ")
                 {
                     newItem = new XtoYZ(codeName, name, examineText, gameLoop, item.Attribute("Y").Value, item.Attribute("Z").Value, item.Attribute("UseMessage").Value);
+                    itemsForItemReferences.Add(newItem);
+                }
+                else if (itemType == "XYtoZ")
+                {
+                    newItem = new XYtoZ(codeName, name, examineText, gameLoop, item.Attribute("Y").Value, item.Attribute("Z").Value, item.Attribute("CombineMessage").Value);
                     itemsForItemReferences.Add(newItem);
                 }
                 else if (itemType == "toX")
@@ -128,6 +133,15 @@ namespace SimpleTextAdventure
                     Item itemZ = itemsForItemReferences.FirstOrDefault(x => x.codeName == (itemX as XtoYZ).Z);
                     if (itemZ == null) Program.PrintErrorAndExit("XML: Error in Item Connections");
                     (itemX as XtoYZ).itemZ = itemZ;
+                }
+                else if (itemX.type == "XYtoZ")
+                {
+                    Item itemY = itemsForItemReferences.FirstOrDefault(x => x.codeName == (itemX as XYtoZ).Y);
+                    if (itemY == null) Program.PrintErrorAndExit("XML: Error in Item Connections");
+                    (itemX as XYtoZ).itemY = itemY;
+                    Item itemZ = itemsForItemReferences.FirstOrDefault(x => x.codeName == (itemX as XYtoZ).Z);
+                    if (itemZ == null) Program.PrintErrorAndExit("XML: Error in Item Connections");
+                    (itemX as XYtoZ).itemZ = itemZ;
                 }
             }
 

@@ -13,6 +13,7 @@
         Inventory,
         Take,
         Drop,
-        Use
+        Use,
+        Combine
     }
 }

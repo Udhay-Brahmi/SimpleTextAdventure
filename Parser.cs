@@ -73,6 +73,9 @@ namespace SimpleTextAdventure
                 case "use":
                     command = Command.Use;
                     break;
+                case "combine":
+                    command = Command.Combine;
+                    break;
                 default:
                     command = Command.Invalid;
                     break;

@@ -32,5 +32,10 @@ namespace SimpleTextAdventure
         {
             Program.PrintWrappedText("Nothing interesting happens.");
         }
+
+        public virtual void CombineItem(List<Item> inventory, Item otherItem)
+        {
+            Program.PrintWrappedText("These two items don't seem to combine.");
+        }
     }
 }

@@ -170,6 +170,32 @@ namespace SimpleTextAdventure
             return false;
         }
 
+        bool TryFindTargetItems(Parameter[] parameters, out Parameter firstTarget, out Parameter secondTarget)
+        {
+            if (parameters.Length < 2)
+            {
+                firstTarget = new Parameter("");
+                secondTarget = new Parameter("");
+                return false;
+            }
+            else
+            {
+                Parameter[] secondParameterArray = new Parameter[] { parameters[1] };
+                if (TryFindTarget(parameters, out Parameter firstParameter) && firstParameter.type == ParameterType.Item && TryFindTarget(secondParameterArray, out Parameter secondParameter) && secondParameter.type == ParameterType.Item)
+                {
+                    firstTarget = firstParameter;
+                    secondTarget = secondParameter;
+                    return true;
+                }
+                else
+                {
+                    firstTarget = new Parameter("");
+                    secondTarget = new Parameter("");
+                    return false;
+                }
+            }
+        }
+
         List<Item> LocateItem(Item item)
         {
             if (inventory.Contains(item))
@@ -193,9 +219,13 @@ namespace SimpleTextAdventure
                     currentZone.items.Remove(target.itemParameter);
                     Program.PrintWrappedText("You take " + target.itemParameter.name + ".");
                 }
+                else if (inventory.Contains(target.itemParameter))
+                {
+                    Program.PrintWrappedText("You already have that item.");
+                }
                 else
                 {
-                    Program.PrintWrappedText("That item is not somewhere you can take it.");
+                    Program.PrintWrappedText("This message shouldn't ever appear in the game. What did you do?");
                 }
             }
             else if (target.stringParameter == "all")
@@ -273,6 +303,25 @@ namespace SimpleTextAdventure
             else
             {
                 Program.PrintWrappedText("Not a valid target.");
+            }
+        }
+
+        public void CombineAction(Parameter[] parameters)
+        {
+            if (TryFindTargetItems(parameters, out Parameter firstTarget, out Parameter secondTarget))
+            {
+                if (inventory.Contains(firstTarget.itemParameter) && inventory.Contains(secondTarget.itemParameter))
+                {
+                    firstTarget.itemParameter.CombineItem(inventory, secondTarget.itemParameter);
+                }
+                else
+                {
+                    Program.PrintWrappedText("You are not holding those items.");
+                }
+            }
+            else
+            {
+                Program.PrintWrappedText("You must specify two items to combine.");
             }
         }
     }

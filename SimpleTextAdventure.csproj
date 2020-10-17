@@ -48,6 +48,7 @@
     <Compile Include="GameLoop.cs" />
     <Compile Include="Item.cs" />
     <Compile Include="ItemTypes\XtoYZ.cs" />
+    <Compile Include="ItemTypes\XYtoZ.cs" />
     <Compile Include="Parameter.cs" />
     <Compile Include="ParameterType.cs" />
     <Compile Include="Parser.cs" />
