@@ -49,6 +49,7 @@ namespace SimpleTextAdventure
                     parametersOut = new Parameter[] { new Parameter(direction) };
                     return;
                 case "examine":
+                case "x":
                 case "study":
                     command = Command.Examine;
                     break;

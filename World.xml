@@ -1,15 +1,15 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <Root>
   <Zones>
-    <Zone Name="the #STUDY">A spacious office with a large desk and a fireplace.</Zone>
-    <Zone Name="the #BILLIARD room">A gaming room featuring a billiard table.</Zone>
-    <Zone Name="the #LOUNGE">A relaxing space.</Zone>
-    <Zone Name="the #LIBRARY">The walls are lined with bookcases.</Zone>
-    <Zone Name="the #HALL">The main hall of the building.</Zone>
-    <Zone Name="the #DINING room">The large dining table could seat six or seven.</Zone>
-    <Zone Name="the #CONSERVATORY">A humid sunroom with a variety of plants.</Zone>
-    <Zone Name="the #BALLROOM">An opulent ballroom, empty save for a grand piano.</Zone>
-    <Zone Name="the #KITCHEN">Yep. It's a kitchen.</Zone>
+    <Zone Name="the #STUDY" IsDark="False">A spacious office with a large desk and a fireplace.</Zone>
+    <Zone Name="the #BILLIARD room" IsDark="False">A gaming room featuring a billiard table.</Zone>
+    <Zone Name="the #LOUNGE" IsDark="False">A relaxing space.</Zone>
+    <Zone Name="the #LIBRARY" IsDark="False">The walls are lined with bookcases.</Zone>
+    <Zone Name="the #HALL" IsDark="False">The main hall of the building.</Zone>
+    <Zone Name="the #DINING room" IsDark="False">The large dining table could seat six or seven.</Zone>
+    <Zone Name="the #CONSERVATORY" IsDark="False">A humid sunroom with a variety of plants.</Zone>
+    <Zone Name="the #BALLROOM" IsDark="False">An opulent ballroom, empty save for a grand piano.</Zone>
+    <Zone Name="the #KITCHEN" IsDark="True">Yep. It's a kitchen.</Zone>
   </Zones>
   <StartingZone>HALL</StartingZone>
   <ZoneConnections>
@@ -25,8 +25,7 @@
     <Connection Start="CONSERVATORY" Direction="East" End="BALLROOM" />
   </ZoneConnections>
   <Items>
-    <Item Name="an unlit #LAMP" StartLocation="DINING" Type="XtoY" Y="LANTERN" UseMessage="You light the lamp. We'll call it a LANTERN now.">A device that can be used as a light source</Item>
-    <Item Name="a lit #LANTERN" StartLocation="NONE" Type="XtoY" Y="LAMP" UseMessage="You darken the lantern. We'll call it a LAMP now.">A bright light source.</Item>
+    <Item Name="an unlit #LAMP|a lit LAMP" StartLocation="DINING" Type="Light" ActivateMessage="You light the lamp." DeactivateMessage="You darken the lamp.">A device that can be used as a light source.|A light source, shining brightly.</Item>
     <Item Name="a heavy lead #PIPE" StartLocation="STUDY" Type="XYtoZ" Y="ROPE" Z="BAR" CombineMessage="You wrap the rope around the pipe.">A section of old bent pipe made of lead. Fairly heavy.</Item>
     <Item Name="a length of #ROPE" StartLocation="LOUNGE" Type="XYtoZ" Y="PIPE" Z="BAR" CombineMessage="You wrap the rope around the pipe.">A short length of sturdy rope with some fraying near the middle.</Item>
     <Item Name="a rope-wrapped #BAR" StartLocation="NONE" Type="toX">A piece of pipe with a rope wrapped around it.</Item>

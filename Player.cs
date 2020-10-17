@@ -8,6 +8,7 @@ namespace SimpleTextAdventure
         public string name;
         public Zone currentZone;
         public List<Item> inventory = new List<Item>();
+        public bool hasLightSource;
 
         public Player(string name, Zone startingZone)
         {
@@ -34,7 +35,7 @@ namespace SimpleTextAdventure
 
         public void LookAction(Direction direction)
         {
-            currentZone.PrintLook(direction);
+            currentZone.PrintLook(direction, hasLightSource);
         }
 
         public void MoveAction(Direction direction)
@@ -55,7 +56,7 @@ namespace SimpleTextAdventure
                         Program.PrintWrappedText("You arrive at " + currentZone.name + ".");
                         if (!currentZone.playerHasVisited)
                         {
-                            currentZone.PrintExamineText();
+                            currentZone.PrintExamineText(hasLightSource);
                             currentZone.playerHasVisited = true;
                         }
                     }
@@ -72,6 +73,10 @@ namespace SimpleTextAdventure
             if (parameters.Length == 0)
             {
                 Program.PrintWrappedText("This command requires a target.");
+            }
+            else if (currentZone.isDark && !hasLightSource)
+            {
+                Program.PrintWrappedText("It is too dark to see anything.");
             }
             else
             {
@@ -101,7 +106,7 @@ namespace SimpleTextAdventure
                 if (currentZone.codeName == parameters[0].stringParameter)
                 {
                     Program.PrintWrappedText("You examine " + currentZone.name + ".");
-                    currentZone.PrintExamineText();
+                    currentZone.PrintExamineText(hasLightSource);
                     targetFound = true;
                 }
                 foreach (KeyValuePair<Direction, Zone> exit in currentZone.exits)
@@ -211,6 +216,11 @@ namespace SimpleTextAdventure
 
         public void TakeAction(Parameter[] parameters)
         {
+            if (currentZone.isDark && !hasLightSource)
+            {
+                Program.PrintWrappedText("It is too dark to see anything.");
+                return;
+            }
             if (TryFindTarget(parameters, out Parameter target) && target.type == ParameterType.Item)
             {
                 if (LocateItem(target.itemParameter) == currentZone.items)
@@ -252,13 +262,25 @@ namespace SimpleTextAdventure
 
         public void DropAction(Parameter[] parameters)
         {
+            if (currentZone.isDark && !hasLightSource)
+            {
+                Program.PrintWrappedText("It would be unwise to drop something in the dark.");
+                return;
+            }
             if (TryFindTarget(parameters, out Parameter target) && target.type == ParameterType.Item)
             {
                 if (LocateItem(target.itemParameter) == inventory)
                 {
-                    currentZone.items.Add(target.itemParameter);
-                    inventory.Remove(target.itemParameter);
-                    Program.PrintWrappedText("You drop " + target.itemParameter.name + ".");
+                    if (currentZone.isDark && target.itemParameter.type == "Light")
+                    {
+                        Program.PrintWrappedText("It would be unwise to drop a light source in the dark.");
+                    }
+                    else
+                    {
+                        currentZone.items.Add(target.itemParameter);
+                        inventory.Remove(target.itemParameter);
+                        Program.PrintWrappedText("You drop " + target.itemParameter.name + ".");
+                    }
                 }
                 else
                 {
@@ -294,6 +316,10 @@ namespace SimpleTextAdventure
                 if (LocateItem(target.itemParameter) == inventory)
                 {
                     target.itemParameter.UseItem(inventory);
+                    if (target.itemParameter.type == "Light")
+                    {
+                        hasLightSource = (target.itemParameter as Light).isActive;
+                    }
                 }
                 else
                 {

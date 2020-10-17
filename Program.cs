@@ -9,7 +9,7 @@ namespace SimpleTextAdventure
     {
         public static string gameName = "SimpleTextAdventure";
         public static string gameAuthor = "Nonparoxysmic";
-        public static string gameVersion = "Alpha 0.0_2";
+        public static string gameVersion = "Alpha 0.0_3";
 
         static readonly string wrappingIndent = "  ";
         static readonly bool indentFirstLine = false;
@@ -33,8 +33,12 @@ namespace SimpleTextAdventure
                     if (char.IsWhiteSpace(nameData[i])) break;
                     codeName += nameData[i];
                 }
+                if (!Boolean.TryParse(zone.Attribute("IsDark").Value, out bool isDark))
+                {
+                    PrintErrorAndExit("XML: Error in Zone Darkness Data");
+                }
                 string examineText = zone.Value;
-                zoneList.Add(new Zone(codeName, name, examineText));
+                zoneList.Add(new Zone(codeName, name, isDark, examineText));
             }
 
             string startingZoneName = worldData.Element("StartingZone").Value;
@@ -65,11 +69,20 @@ namespace SimpleTextAdventure
             {
                 string nameData = item.Attribute("Name").Value;
                 if (nameData.IndexOf('#') < 0) Program.PrintErrorAndExit("XML: Error in Item Name Data");
-                string name = nameData.Substring(0, nameData.IndexOf('#')) + nameData.Substring(nameData.IndexOf('#') + 1);
+                string name;
+                if (nameData.IndexOf('|') < 0)
+                {
+                    name = nameData.Substring(0, nameData.IndexOf('#')) + nameData.Substring(nameData.IndexOf('#') + 1);
+                }
+                else
+                {
+                    name = nameData.Substring(0, nameData.IndexOf('#')) + nameData.Substring(nameData.IndexOf('#') + 1, nameData.IndexOf('|') - nameData.IndexOf('#') - 1);
+                }
+                
                 string codeName = "";
                 for (int i = nameData.IndexOf('#') + 1; i < nameData.Length; i++)
                 {
-                    if (char.IsWhiteSpace(nameData[i])) break;
+                    if (char.IsWhiteSpace(nameData[i]) || nameData[i] == '|') break;
                     codeName += nameData[i];
                 }
                 string examineText = item.Value;
@@ -95,6 +108,11 @@ namespace SimpleTextAdventure
                 {
                     newItem = new Item("toX", codeName, name, examineText);
                     itemsForItemReferences.Add(newItem);
+                }
+                else if (itemType == "Light")
+                {
+                    string activeName = nameData.Substring(nameData.IndexOf('|') + 1);
+                    newItem = new Light(codeName, name, activeName, examineText, item.Attribute("ActivateMessage").Value, item.Attribute("DeactivateMessage").Value);
                 }
                 else
                 {

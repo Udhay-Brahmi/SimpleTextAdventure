@@ -19,7 +19,7 @@ namespace SimpleTextAdventure
             Program.PrintWrappedText("Goal: take 8 items to the study.");
             Console.WriteLine();
             Program.PrintWrappedText("You are in " + player.currentZone.name + ".");
-            player.currentZone.PrintExamineText();
+            player.currentZone.PrintExamineText(player.hasLightSource);
             
             bool gameOver = false;
             while (!gameOver)
@@ -97,7 +97,7 @@ namespace SimpleTextAdventure
         {
             Program.PrintWrappedText("List of Commands: quit, help, version, look, move / go, examine, wait, inventory, take, drop, use, combine.");
             Program.PrintWrappedText("Commands with Parameters: look <direction>, move <direction>, examine <target>, take <item>, drop <item>, use <item>, combine <item> <item>.");
-            Program.PrintWrappedText("Quick Commands: l (look), i (inventory), n (north / move north), etc.");
+            Program.PrintWrappedText("Quick Commands: l (look), x (examine), i (inventory), n (north / move north), etc.");
         }
 
         void PrintGameVersion()

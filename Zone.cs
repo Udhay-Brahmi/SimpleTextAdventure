@@ -13,19 +13,29 @@ namespace SimpleTextAdventure
         public List<Item> items = new List<Item>();
 
         public bool playerHasVisited;
+        public bool isDark;
 
-        public Zone(string codeName, string name, string examineText)
+        public Zone(string codeName, string name, bool isDark, string examineText)
         {
             this.codeName = codeName.ToLower();
             this.name = name;
+            this.isDark = isDark;
             this.examineText = examineText;
         }
 
-        public void PrintExamineText()
+        public void PrintExamineText(bool playerHasLightSource)
         {
-            Program.PrintWrappedText(examineText);
-            PrintExitDirections();
-            PrintItems();
+            if (isDark && !playerHasLightSource)
+            {
+                Program.PrintWrappedText("It is too dark to see anything.");
+                PrintExitDirections();
+            }
+            else
+            {
+                Program.PrintWrappedText(examineText);
+                PrintExitDirections();
+                PrintItems();
+            }
         }
 
         public void PrintExitDirections()
@@ -51,7 +61,7 @@ namespace SimpleTextAdventure
             }
         }
 
-        public void PrintLook(Direction direction)
+        public void PrintLook(Direction direction, bool playerHasLightSource)
         {
             switch (direction)
             {
@@ -59,14 +69,30 @@ namespace SimpleTextAdventure
                     Program.PrintWrappedText("Not a valid direction.");
                     break;
                 case Direction.Here:
-                    Program.PrintWrappedText("You are in " + name + ".");
-                    PrintExitDirections();
-                    PrintItems();
+                    if (isDark && !playerHasLightSource)
+                    {
+                        Program.PrintWrappedText("You are in " + name + ".");
+                        Program.PrintWrappedText("It is too dark to see anything.");
+                        PrintExitDirections();
+                    }
+                    else
+                    {
+                        Program.PrintWrappedText("You are in " + name + ".");
+                        PrintExitDirections();
+                        PrintItems();
+                    }
                     break;
                 default:
                     if (exits.ContainsKey(direction))
                     {
-                        Program.PrintWrappedText("You look " + direction + ". You see " + exits[direction].name + ".");
+                        if (exits[direction].isDark)
+                        {
+                            Program.PrintWrappedText("You look " + direction + ". You see a dark area.");
+                        }
+                        else
+                        {
+                            Program.PrintWrappedText("You look " + direction + ". You see " + exits[direction].name + ".");
+                        }
                     }
                     else
                     {
