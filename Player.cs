@@ -49,6 +49,20 @@ namespace SimpleTextAdventure
                     Program.PrintWrappedText("You must specify a direction to move.");
                     break;
                 default:
+                    if (currentZone.locks.ContainsKey(direction))
+                    {
+                        if (inventory.Contains(currentZone.locks[direction]))
+                        {
+                            Program.PrintWrappedText("You unlock the way with " + currentZone.locks[direction] + ".");
+                            currentZone.locks.Remove(direction);
+                            currentZone.exits[direction].locks.Remove(Zone.ReverseDirection(direction));
+                        }
+                        else
+                        {
+                            Program.PrintWrappedText("That way is locked. You will need something to unlock it.");
+                            return;
+                        }
+                    }
                     if (currentZone.exits.ContainsKey(direction))
                     {
                         Program.PrintWrappedText("You move " + direction + ". ");
@@ -57,7 +71,10 @@ namespace SimpleTextAdventure
                         if (!currentZone.playerHasVisited)
                         {
                             currentZone.PrintExamineText(hasLightSource);
-                            currentZone.playerHasVisited = true;
+                            if (!currentZone.isDark || hasLightSource)
+                            {
+                                currentZone.playerHasVisited = true;
+                            }
                         }
                     }
                     else
@@ -289,6 +306,10 @@ namespace SimpleTextAdventure
             }
             else if (target.stringParameter == "all")
             {
+                if (currentZone.isDark)
+                {
+                    Program.PrintWrappedText("It would be unwise to drop everything in the dark.");
+                }
                 if (inventory.Count > 0)
                 {
                     while (inventory.Count > 0)

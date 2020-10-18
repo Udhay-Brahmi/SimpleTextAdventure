@@ -10,6 +10,7 @@ namespace SimpleTextAdventure
         public string examineText;
 
         public Dictionary<Direction, Zone> exits = new Dictionary<Direction, Zone>();
+        public Dictionary<Direction, Item> locks = new Dictionary<Direction, Item>();
         public List<Item> items = new List<Item>();
 
         public bool playerHasVisited;
@@ -35,22 +36,27 @@ namespace SimpleTextAdventure
                 Program.PrintWrappedText(examineText);
                 PrintExitDirections();
                 PrintItems();
+                if (!playerHasVisited) playerHasVisited = true;
             }
         }
 
         public void PrintExitDirections()
         {
-            string[] output = new string[exits.Count];
+            string[] allExits = new string[exits.Count];
             int exitNumber = 0;
             foreach (int i in Enum.GetValues(typeof(Direction)))
             {
                 if (exits.ContainsKey((Direction)i))
                 {
-                    output[exitNumber] = ((Direction)i).ToString();
+                    allExits[exitNumber] = ((Direction)i).ToString();
+                    if (locks.ContainsKey((Direction)i))
+                    {
+                        allExits[exitNumber] += " (Locked)";
+                    }
                     exitNumber++;
                 }
             }
-            Program.PrintWrappedText("You can move: " + string.Join(", ", output));
+            Program.PrintWrappedText("You can move: " + string.Join(", ", allExits));
         }
 
         public void PrintItems()
@@ -83,6 +89,11 @@ namespace SimpleTextAdventure
                     }
                     break;
                 default:
+                    if (locks.ContainsKey(direction))
+                    {
+                        Program.PrintWrappedText("You look " + direction + ". That way is locked.");
+                        return;
+                    }
                     if (exits.ContainsKey(direction))
                     {
                         if (exits[direction].isDark)
@@ -120,6 +131,13 @@ namespace SimpleTextAdventure
         {
             startZone.AddExit(moveDirection, endZone);
             endZone.AddExit(ReverseDirection(moveDirection), startZone);
+        }
+
+        public static void ConnectZones(Zone startZone, Direction moveDirection, Zone endZone, Item key)
+        {
+            ConnectZones(startZone, moveDirection, endZone);
+            startZone.locks.Add(moveDirection, key);
+            endZone.locks.Add(ReverseDirection(moveDirection), key);
         }
 
         public void AddExit(Direction direction, Zone adjacentZone)

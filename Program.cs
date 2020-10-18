@@ -9,7 +9,7 @@ namespace SimpleTextAdventure
     {
         public static string gameName = "SimpleTextAdventure";
         public static string gameAuthor = "Nonparoxysmic";
-        public static string gameVersion = "Alpha 0.0_3";
+        public static string gameVersion = "Alpha 0.1";
 
         static readonly string wrappingIndent = "  ";
         static readonly bool indentFirstLine = false;
@@ -44,21 +44,6 @@ namespace SimpleTextAdventure
             string startingZoneName = worldData.Element("StartingZone").Value;
             Zone startingZone = zoneList.FirstOrDefault(x => x.codeName.ToLower() == startingZoneName.ToLower());
             if (startingZone == null) Program.PrintErrorAndExit("XML: Error in Starting Zone Data");
-
-            List<XElement> connectionsData = worldData.Elements().FirstOrDefault(x => x.Name == "ZoneConnections").Elements().ToList();
-            foreach (XElement connection in connectionsData)
-            {
-                string start = connection.Attribute("Start").Value;
-                string directionName = connection.Attribute("Direction").Value;
-                string end = connection.Attribute("End").Value;
-
-                Zone startZone = zoneList.FirstOrDefault(x => x.codeName.ToLower() == start.ToLower());
-                Zone endZone = zoneList.FirstOrDefault(x => x.codeName.ToLower() == end.ToLower());
-                Direction moveDirection = 0;
-                if (startZone == null || endZone == null || !Parser.TryParseDirection(directionName, out moveDirection)) Program.PrintErrorAndExit("XML: Error in Zone Connection Data");
-
-                Zone.ConnectZones(startZone, moveDirection, endZone);
-            }
 
             Player player = new Player("Tabula Rasa", startingZone);
             GameLoop gameLoop = new GameLoop(player);
@@ -114,6 +99,11 @@ namespace SimpleTextAdventure
                     string activeName = nameData.Substring(nameData.IndexOf('|') + 1);
                     newItem = new Light(codeName, name, activeName, examineText, item.Attribute("ActivateMessage").Value, item.Attribute("DeactivateMessage").Value);
                 }
+                else if (itemType == "Key")
+                {
+                    newItem = new Item("Key", codeName, name, examineText);
+                    itemsForItemReferences.Add(newItem);
+                }
                 else
                 {
                     newItem = new Item("X", codeName, name, examineText);
@@ -160,6 +150,35 @@ namespace SimpleTextAdventure
                     Item itemZ = itemsForItemReferences.FirstOrDefault(x => x.codeName == (itemX as XYtoZ).Z);
                     if (itemZ == null) Program.PrintErrorAndExit("XML: Error in Item Connections");
                     (itemX as XYtoZ).itemZ = itemZ;
+                }
+            }
+
+            List<XElement> connectionsData = worldData.Elements().FirstOrDefault(x => x.Name == "ZoneConnections").Elements().ToList();
+            foreach (XElement connection in connectionsData)
+            {
+                string start = connection.Attribute("Start").Value;
+                string directionName = connection.Attribute("Direction").Value;
+                string end = connection.Attribute("End").Value;
+                string keyItemName = "";
+                Item key = new Item();
+                if (connection.Attribute("Key") != null)
+                {
+                    keyItemName = connection.Attribute("Key").Value;
+                    key = itemsForItemReferences.FirstOrDefault(x => x.codeName.ToLower() == keyItemName.ToLower());
+                }
+
+                Zone startZone = zoneList.FirstOrDefault(x => x.codeName.ToLower() == start.ToLower());
+                Zone endZone = zoneList.FirstOrDefault(x => x.codeName.ToLower() == end.ToLower());
+                Direction moveDirection = 0;
+                if (startZone == null || endZone == null || !Parser.TryParseDirection(directionName, out moveDirection)) Program.PrintErrorAndExit("XML: Error in Zone Connection Data");
+
+                if (keyItemName == "")
+                {
+                    Zone.ConnectZones(startZone, moveDirection, endZone);
+                }
+                else
+                {
+                    Zone.ConnectZones(startZone, moveDirection, endZone, key);
                 }
             }
 

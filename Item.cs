@@ -10,6 +10,14 @@ namespace SimpleTextAdventure
         public string examineText;
         public string type;
 
+        public Item()
+        {
+            codeName = "NULL";
+            name = "NULL";
+            examineText = "NULL";
+            type = "NULL";
+        }
+
         public Item(string type, string codeName, string name, string examineText)
         {
             this.type = type;

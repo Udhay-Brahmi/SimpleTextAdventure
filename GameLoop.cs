@@ -16,7 +16,7 @@ namespace SimpleTextAdventure
 
         public void PlayGame()
         {
-            Program.PrintWrappedText("Goal: take 8 items to the study.");
+            Program.PrintWrappedText("Goal: take 9 items to the study.");
             Console.WriteLine();
             Program.PrintWrappedText("You are in " + player.currentZone.name + ".");
             player.currentZone.PrintExamineText(player.hasLightSource);
@@ -72,17 +72,17 @@ namespace SimpleTextAdventure
                 }
 
                 // Example game over condition:
-                if (player.currentZone.codeName == "study" && (player.inventory.Count + player.currentZone.items.Count) >= 8)
+                if (player.currentZone.codeName == "study" && (player.inventory.Count + player.currentZone.items.Count) >= 9)
                 {
                     gameOver = true;
                     Console.WriteLine();
-                    if (player.inventory.Count + player.currentZone.items.Count == 8)
+                    if (player.inventory.Count + player.currentZone.items.Count == 9)
                     {
-                        Program.PrintWrappedText("You win! You have brought 8 items to the study.");
+                        Program.PrintWrappedText("You win! You have brought 9 items to the study.");
                     }
                     else
                     {
-                        Program.PrintWrappedText("You win! You have brought more than 8 items to the study.");
+                        Program.PrintWrappedText("You win! You have brought more than 9 items to the study.");
                     }
                 }
             }

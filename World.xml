@@ -12,18 +12,6 @@
     <Zone Name="the #KITCHEN" IsDark="True">Yep. It's a kitchen.</Zone>
   </Zones>
   <StartingZone>HALL</StartingZone>
-  <ZoneConnections>
-    <Connection Start="STUDY" Direction="East" End="BILLIARD" />
-    <Connection Start="BILLIARD" Direction="East" End="LOUNGE" />
-    <Connection Start="STUDY" Direction="South" End="LIBRARY" />
-    <Connection Start="BILLIARD" Direction="South" End="HALL" />
-    <Connection Start="LOUNGE" Direction="South" End="DINING" />
-    <Connection Start="LIBRARY" Direction="East" End="HALL" />
-    <Connection Start="HALL" Direction="East" End="DINING" />
-    <Connection Start="HALL" Direction="South" End="BALLROOM" />
-    <Connection Start="DINING" Direction="South" End="KITCHEN" />
-    <Connection Start="CONSERVATORY" Direction="East" End="BALLROOM" />
-  </ZoneConnections>
   <Items>
     <Item Name="an unlit #LAMP|a lit LAMP" StartLocation="DINING" Type="Light" ActivateMessage="You light the lamp." DeactivateMessage="You darken the lamp.">A device that can be used as a light source.|A light source, shining brightly.</Item>
     <Item Name="a heavy lead #PIPE" StartLocation="STUDY" Type="XYtoZ" Y="ROPE" Z="BAR" CombineMessage="You wrap the rope around the pipe.">A section of old bent pipe made of lead. Fairly heavy.</Item>
@@ -35,6 +23,19 @@
     <Item Name="a large #WRENCH" StartLocation="CONSERVATORY" Type="X">A very large wrench with some damage. Looks like it was dropped.</Item>
     <Item Name="a hefty #CANDLESTICK" StartLocation="BALLROOM" Type="X">A large golden candlestick. It was cleaned recently.</Item>
     <Item Name="a sharp #KNIFE" StartLocation="KITCHEN" Type="X">A dagger with a long sharp blade. The very tip is broken off.</Item>
+    <Item Name="the conservatory #KEY" StartLocation="BALLROOM" Type="Key">A plain-looking key.</Item>
     <Item Name="a #TOWEL" StartLocation="PLAYER" Type="X">Don't panic.</Item>
   </Items>
+  <ZoneConnections>
+    <Connection Start="STUDY" Direction="East" End="BILLIARD" />
+    <Connection Start="BILLIARD" Direction="East" End="LOUNGE" />
+    <Connection Start="STUDY" Direction="South" End="LIBRARY" />
+    <Connection Start="BILLIARD" Direction="South" End="HALL" />
+    <Connection Start="LOUNGE" Direction="South" End="DINING" />
+    <Connection Start="LIBRARY" Direction="East" End="HALL" />
+    <Connection Start="HALL" Direction="East" End="DINING" />
+    <Connection Start="HALL" Direction="South" End="BALLROOM" />
+    <Connection Start="DINING" Direction="South" End="KITCHEN" />
+    <Connection Start="CONSERVATORY" Direction="East" End="BALLROOM" Key="KEY" />
+  </ZoneConnections>
 </Root>
