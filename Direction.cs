@@ -7,6 +7,10 @@
         North,
         East,
         South,
-        West
+        West,
+        Up,
+        Down,
+        In,
+        Out
     }
 }

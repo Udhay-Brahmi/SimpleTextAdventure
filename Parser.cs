@@ -7,7 +7,6 @@ namespace SimpleTextAdventure
     {
         public static void ParseUserInput(string userInput, out Command commandOut, out Parameter[] parametersOut)
         {
-            // Found this on the internet. TODO: Understand LINQ
             string[] terms = userInput.ToLower().Split(null).Where(x => !string.IsNullOrEmpty(x)).ToArray();
 
             Command command;
@@ -128,6 +127,22 @@ namespace SimpleTextAdventure
                 case "w":
                 case "west":
                     direction = Direction.West;
+                    break;
+                case "u":
+                case "up":
+                    direction = Direction.Up;
+                    break;
+                case "d":
+                case "down":
+                    direction = Direction.Down;
+                    break;
+                case "in":
+                case "inside":
+                    direction = Direction.In;
+                    break;
+                case "out":
+                case "outside":
+                    direction = Direction.Out;
                     break;
                 default:
                     isValidDirection = false;

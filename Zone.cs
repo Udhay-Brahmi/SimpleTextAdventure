@@ -121,6 +121,10 @@ namespace SimpleTextAdventure
                 case Direction.East: return Direction.West;
                 case Direction.South: return Direction.North;
                 case Direction.West: return Direction.East;
+                case Direction.Up: return Direction.Down;
+                case Direction.Down: return Direction.Up;
+                case Direction.In: return Direction.Out;
+                case Direction.Out: return Direction.In;
                 default:
                     Program.PrintErrorAndExit("Zone: Invalid direction in ReverseDirection()");
                     return Direction.Invalid;
