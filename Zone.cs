@@ -159,5 +159,11 @@ namespace SimpleTextAdventure
                 Program.PrintErrorAndExit("Attempted to add duplicate exit to Zone: " + this.name);
             }
         }
+
+        public void AddExit(Direction direction, Zone adjacentZone, Item key)
+        {
+            AddExit(direction, adjacentZone);
+            locks.Add(direction, key);
+        }
     }
 }

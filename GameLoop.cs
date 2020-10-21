@@ -16,7 +16,7 @@ namespace SimpleTextAdventure
 
         public void PlayGame()
         {
-            Program.PrintWrappedText("Goal: take 9 items to the study.");
+            Program.PrintWrappedText("TESTING MODE // Goal: take 9 items to the study.");
             Console.WriteLine();
             Program.PrintWrappedText("You are in " + player.currentZone.name + ".");
             player.currentZone.PrintExamineText(player.hasLightSource);
@@ -78,11 +78,11 @@ namespace SimpleTextAdventure
                     Console.WriteLine();
                     if (player.inventory.Count + player.currentZone.items.Count == 9)
                     {
-                        Program.PrintWrappedText("You win! You have brought 9 items to the study.");
+                        Program.PrintWrappedText("TESTING MODE // You win! You have brought 9 items to the study.");
                     }
                     else
                     {
-                        Program.PrintWrappedText("You win! You have brought more than 9 items to the study.");
+                        Program.PrintWrappedText("TESTING MODE // You win! You have brought more than 9 items to the study.");
                     }
                 }
             }

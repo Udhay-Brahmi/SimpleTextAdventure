@@ -43,6 +43,16 @@ namespace SimpleTextAdventure
                 case "south":
                 case "w":
                 case "west":
+                case "u":
+                case "up":
+                case "d":
+                case "down":
+                case "in":
+                case "inside":
+                case "inward":
+                case "out":
+                case "outside":
+                case "outward":
                     commandOut = Command.Move;
                     TryParseDirection(terms[0], out Direction direction);
                     parametersOut = new Parameter[] { new Parameter(direction) };
@@ -138,10 +148,12 @@ namespace SimpleTextAdventure
                     break;
                 case "in":
                 case "inside":
+                case "inward":
                     direction = Direction.In;
                     break;
                 case "out":
                 case "outside":
+                case "outward":
                     direction = Direction.Out;
                     break;
                 default:

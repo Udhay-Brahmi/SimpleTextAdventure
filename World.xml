@@ -1,6 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <Root>
   <Zones>
+    <Zone Name="the test #CHAMBER" IsDark="False">The walls and floor of this large room are solid concrete. Far above you, florescent lights hang amongst thick metal rafters. Your footsteps echo through the cavernous room. The enormous metal door through which you entered was sealed behind you. At the center of the room stands a towering monolithic archway. The monument wouldn't look out of place at Stonehenge but for the surface being completely covered in carved symbols and images. Nearby sits a small wooden table for holding items.</Zone>
+    
     <Zone Name="the #STUDY" IsDark="False">A spacious office with a large desk and a fireplace.</Zone>
     <Zone Name="the #BILLIARD room" IsDark="False">A gaming room featuring a billiard table.</Zone>
     <Zone Name="the #LOUNGE" IsDark="False">A relaxing space.</Zone>
@@ -11,8 +13,11 @@
     <Zone Name="the #BALLROOM" IsDark="False">An opulent ballroom, empty save for a grand piano.</Zone>
     <Zone Name="the #KITCHEN" IsDark="True">Yep. It's a kitchen.</Zone>
   </Zones>
-  <StartingZone>HALL</StartingZone>
+  <StartingZone>CHAMBER</StartingZone>
   <Items>
+    <Item Name="a typed #NOTE" StartLocation="CHAMBER" Type="X">A sheet of paper with typed text: "Instructions: (1) Pick up the scepter. (2) Walk through the archway. (3) You should find yourself within 100 meters of the archway. Observe your surroundings and find the archway. IMPORTANT: DO NOT touch or pick up anything. (4) Carry the scepter through the archway again."</Item>
+    <Item Name="a strange #SCEPTER" StartLocation="CHAMBER" Type="Key">A strange looking scepter with a red gem.</Item>
+    
     <Item Name="an unlit #LAMP|a lit LAMP" StartLocation="DINING" Type="Light" ActivateMessage="You light the lamp." DeactivateMessage="You darken the lamp.">A device that can be used as a light source.|A light source, shining brightly.</Item>
     <Item Name="a heavy lead #PIPE" StartLocation="STUDY" Type="XYtoZ" Y="ROPE" Z="BAR" CombineMessage="You wrap the rope around the pipe.">A section of old bent pipe made of lead. Fairly heavy.</Item>
     <Item Name="a length of #ROPE" StartLocation="LOUNGE" Type="XYtoZ" Y="PIPE" Z="BAR" CombineMessage="You wrap the rope around the pipe.">A short length of sturdy rope with some fraying near the middle.</Item>
@@ -24,9 +29,11 @@
     <Item Name="a hefty #CANDLESTICK" StartLocation="BALLROOM" Type="X">A large golden candlestick. It was cleaned recently.</Item>
     <Item Name="a sharp #KNIFE" StartLocation="KITCHEN" Type="X">A dagger with a long sharp blade. The very tip is broken off.</Item>
     <Item Name="the conservatory #KEY" StartLocation="BALLROOM" Type="Key">A plain-looking key.</Item>
-    <Item Name="a #TOWEL" StartLocation="PLAYER" Type="X">Don't panic.</Item>
+    <Item Name="a #TOWEL" StartLocation="NONE" Type="X">Don't panic.</Item>
   </Items>
   <ZoneConnections>
+    <Connection Start="CHAMBER" Direction="In" End="HALL" Key="SCEPTER" OneWay="True" />
+    
     <Connection Start="STUDY" Direction="East" End="BILLIARD" />
     <Connection Start="BILLIARD" Direction="East" End="LOUNGE" />
     <Connection Start="STUDY" Direction="South" End="LIBRARY" />

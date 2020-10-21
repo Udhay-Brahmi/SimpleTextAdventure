@@ -9,7 +9,7 @@ namespace SimpleTextAdventure
     {
         public static string gameName = "SimpleTextAdventure";
         public static string gameAuthor = "Nonparoxysmic";
-        public static string gameVersion = "Alpha 0.1_1";
+        public static string gameVersion = "Alpha 0.1_2";
 
         static readonly string wrappingIndent = "  ";
         static readonly bool indentFirstLine = false;
@@ -166,6 +166,7 @@ namespace SimpleTextAdventure
                     keyItemName = connection.Attribute("Key").Value;
                     key = itemsForItemReferences.FirstOrDefault(x => x.codeName.ToLower() == keyItemName.ToLower());
                 }
+                bool isOneWay = connection.Attribute("OneWay") != null;
 
                 Zone startZone = zoneList.FirstOrDefault(x => x.codeName.ToLower() == start.ToLower());
                 Zone endZone = zoneList.FirstOrDefault(x => x.codeName.ToLower() == end.ToLower());
@@ -174,11 +175,13 @@ namespace SimpleTextAdventure
 
                 if (keyItemName == "")
                 {
-                    Zone.ConnectZones(startZone, moveDirection, endZone);
+                    if (isOneWay) startZone.AddExit(moveDirection, endZone);
+                    else Zone.ConnectZones(startZone, moveDirection, endZone);
                 }
                 else
                 {
-                    Zone.ConnectZones(startZone, moveDirection, endZone, key);
+                    if (isOneWay) startZone.AddExit(moveDirection, endZone, key);
+                    else Zone.ConnectZones(startZone, moveDirection, endZone, key);
                 }
             }
 
