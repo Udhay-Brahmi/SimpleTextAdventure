@@ -77,8 +77,7 @@ namespace SimpleTextAdventure
                 case Direction.Here:
                     if (isDark && !playerHasLightSource)
                     {
-                        Program.PrintWrappedText("You are in " + name + ".");
-                        Program.PrintWrappedText("It is too dark to see anything.");
+                        Program.PrintWrappedText("You are in " + name + ". It is too dark to see anything.");
                         PrintExitDirections();
                     }
                     else

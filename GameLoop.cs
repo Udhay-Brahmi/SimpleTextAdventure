@@ -16,7 +16,10 @@ namespace SimpleTextAdventure
 
         public void PlayGame()
         {
-            Program.PrintWrappedText("TESTING MODE // Goal: take 9 items to the study.");
+            // Testing intro:
+            int testNumberOfItems = 9;
+            Program.PrintWrappedText("TESTING MODE // Goal: take " + testNumberOfItems + " items to the study.");
+
             Console.WriteLine();
             Program.PrintWrappedText("You are in " + player.currentZone.name + ".");
             player.currentZone.PrintExamineText(player.hasLightSource);
@@ -71,25 +74,23 @@ namespace SimpleTextAdventure
                         break;
                 }
 
-                // Example game over condition:
-                if (player.currentZone.codeName == "study" && (player.inventory.Count + player.currentZone.items.Count) >= 9)
+                // Testing game over condition:
+                if (player.currentZone.codeName == "study" && (player.inventory.Count + player.currentZone.items.Count) >= testNumberOfItems)
                 {
                     gameOver = true;
                     Console.WriteLine();
-                    if (player.inventory.Count + player.currentZone.items.Count == 9)
+                    if (player.inventory.Count + player.currentZone.items.Count == testNumberOfItems)
                     {
-                        Program.PrintWrappedText("TESTING MODE // You win! You have brought 9 items to the study.");
+                        Program.PrintWrappedText("TESTING MODE // You win! You have brought " + testNumberOfItems + " items to the study.");
                     }
                     else
                     {
-                        Program.PrintWrappedText("TESTING MODE // You win! You have brought more than 9 items to the study.");
+                        Program.PrintWrappedText("TESTING MODE // You win! You have brought more than " + testNumberOfItems + " items to the study.");
                     }
                 }
             }
 
-            Console.WriteLine();
-            Program.PrintWrappedText("GAME OVER");
-            Console.Write("Press any key to exit");
+            Console.Write(Environment.NewLine + "GAME OVER" + Environment.NewLine + "Press any key to exit");
             Console.ReadKey(true);
         }
         
