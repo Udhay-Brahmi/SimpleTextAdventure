@@ -19,7 +19,9 @@ namespace SimpleTextAdventure
             // Testing intro:
             int testNumberOfItems = 9;
             Program.PrintWrappedText("TESTING MODE // Goal: take " + testNumberOfItems + " items to the study.");
+            Console.WriteLine();
 
+            Program.PrintWrappedText("~~Intro text to be added~~");
             Console.WriteLine();
             Program.PrintWrappedText("You are in " + player.currentZone.name + ".");
             player.currentZone.PrintExamineText(player.hasLightSource);
@@ -96,9 +98,21 @@ namespace SimpleTextAdventure
         
         void PrintGameHelp()
         {
-            Program.PrintWrappedText("List of Commands: quit, help, version, look, move / go, examine, wait, inventory, take, drop, use, combine.");
-            Program.PrintWrappedText("Commands with Parameters: look <direction>, move <direction>, examine <target>, take <item>, drop <item>, use <item>, combine <item> <item>.");
-            Program.PrintWrappedText("Quick Commands: l (look), x (examine), i (inventory), n (north / move north), etc.");
+            Program.PrintWrappedText("List of Commands:");
+            Program.PrintWrappedText("- Menu Commands: quit, help, version");
+            Program.PrintWrappedText("- Basic Commands: look, move, examine, wait");
+            Program.PrintWrappedText("- Item Commands: inventory, take, drop, use, combine");
+            Program.PrintWrappedText("Variations:");
+            Program.PrintWrappedText("- look, look <direction>, l <direction>");
+            Program.PrintWrappedText("- move <direction>, go <direction>, <direction>");
+            Program.PrintWrappedText("- examine <target>, x <target>");
+            Program.PrintWrappedText("- inventory, i");
+            Program.PrintWrappedText("- take <item>, take all");
+            Program.PrintWrappedText("- drop <item>, drop all");
+            Program.PrintWrappedText("- use <item>");
+            Program.PrintWrappedText("- combine <item> <item>");
+            Program.PrintWrappedText("Directions:");
+            Program.PrintWrappedText("- north, n, east, e, south, s, west, w, up, u, down, d, in, out");
         }
 
         void PrintGameVersion()

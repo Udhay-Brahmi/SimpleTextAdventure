@@ -13,7 +13,7 @@ namespace SimpleTextAdventure
         readonly string activeExamineText;
         public bool isActive;
 
-        public Light(string codeName, string inactiveName, string activeName, string examineText, string activateMessage, string deactivateMessage) : base("Light", codeName, inactiveName, examineText)
+        public Light(string codeName, string inactiveName, string activeName, string examineText, string activateMessage, string deactivateMessage) : base("Light", codeName, inactiveName, "NULL")
         {
             this.activateMessage = activateMessage;
             this.deactivateMessage = deactivateMessage;
@@ -21,7 +21,7 @@ namespace SimpleTextAdventure
             this.activeName = activeName;
             inactiveExamineText = examineText.Substring(0, examineText.IndexOf('|'));
             activeExamineText = examineText.Substring(examineText.IndexOf('|') + 1);
-            base.examineText = inactiveExamineText;
+            this.examineText = inactiveExamineText;
         }
 
         public override void UseItem(List<Item> inventory)
