@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace SimpleTextAdventure
 {
@@ -54,8 +55,7 @@ namespace SimpleTextAdventure
                         if (inventory.Contains(currentZone.locks[direction]))
                         {
                             Program.PrintWrappedText("You unlock the way with " + currentZone.locks[direction] + ".");
-                            currentZone.locks.Remove(direction);
-                            currentZone.exits[direction].locks.Remove(Zone.ReverseDirection(direction));
+                            currentZone.UnlockExit(direction);
                         }
                         else
                         {
@@ -65,14 +65,22 @@ namespace SimpleTextAdventure
                     }
                     if (currentZone.exits.ContainsKey(direction))
                     {
-                        Program.PrintWrappedText("You move " + direction + ". ");
-
                         if (currentZone.codeName == "chamber" && direction == Direction.In)
                         {
-                            inventory.Remove(inventory.Find(x => x.codeName == "scepter"));
-                            Program.PrintWrappedText("The scepter disappears from your hands and the world changes around you as you walk through the archway.");
+                            bool holdingScepter = inventory.Find(x => x.codeName == "scepter") != default;
+                            if (holdingScepter)
+                            {
+                                inventory.Remove(inventory.Find(x => x.codeName == "scepter"));
+                                Program.PrintWrappedText("The scepter disappears from your hands and the world changes around you as you walk through the archway.");
+                            }
+                            else
+                            {
+                                Program.PrintWrappedText("You walk through the archway. You remain in the same room.");
+                                return;
+                            }
                         }
 
+                        Program.PrintWrappedText("You move " + direction + ". ");
                         currentZone = currentZone.exits[direction];
                         Program.PrintWrappedText("You arrive at " + currentZone.name + ".");
                         if (!currentZone.playerHasVisited)
@@ -343,6 +351,20 @@ namespace SimpleTextAdventure
             {
                 if (LocateItem(target.itemParameter) == inventory)
                 {
+                    if (target.itemParameter.type == "Key")
+                    {
+                        if (currentZone.locks.ContainsValue(target.itemParameter))
+                        {
+                            Direction lockDirection = currentZone.locks.First(x => x.Value == target.itemParameter).Key;
+                            currentZone.UnlockExit(lockDirection);
+                            Program.PrintWrappedText("You unlock the way in the direction of " + lockDirection + ".");
+                        }
+                        else
+                        {
+                            Program.PrintWrappedText("Nothing interesting happens.");
+                        }
+                        return;
+                    }
                     target.itemParameter.UseItem(inventory);
                     if (target.itemParameter.type == "Light")
                     {

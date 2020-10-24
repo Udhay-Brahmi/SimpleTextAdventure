@@ -167,5 +167,11 @@ namespace SimpleTextAdventure
             AddExit(direction, adjacentZone);
             locks.Add(direction, key);
         }
+
+        public void UnlockExit(Direction direction)
+        {
+            locks.Remove(direction);
+            exits[direction].locks.Remove(Zone.ReverseDirection(direction));
+        }
     }
 }

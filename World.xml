@@ -20,7 +20,7 @@
   <StartingZone>CHAMBER</StartingZone>
   <Items>
     <Item Name="a typed #NOTE" StartLocation="CHAMBER" Type="X">A sheet of paper with typed text: "Instructions: (1) Pick up the scepter. (2) Walk through the archway. (3) You should find yourself within 100 meters of the archway. Observe your surroundings and find the archway. IMPORTANT: DO NOT touch or pick up anything. DO NOT enter any structure. (4) Carry the scepter through the archway again."</Item>
-    <Item Name="a strange #SCEPTER" StartLocation="CHAMBER" Type="Key">A strange looking scepter with a red gem.</Item>
+    <Item Name="a strange #SCEPTER" StartLocation="CHAMBER" Type="X">A strange looking scepter with a red gem.</Item>
     
     <Item Name="an unlit #LAMP|a lit LAMP" StartLocation="DINING" Type="Light" ActivateMessage="You light the lamp." DeactivateMessage="You darken the lamp.">A device that can be used as a light source.|A light source, shining brightly.</Item>
     <Item Name="a heavy lead #PIPE" StartLocation="STUDY" Type="XYtoZ" Y="ROPE" Z="BAR" CombineMessage="You wrap the rope around the pipe.">A section of old bent pipe made of lead. Fairly heavy.</Item>
@@ -36,7 +36,7 @@
     <Item Name="a #TOWEL" StartLocation="NONE" Type="X">Don't panic.</Item>
   </Items>
   <ZoneConnections>
-    <Connection Start="CHAMBER" Direction="In" End="SOUTH" Key="SCEPTER" OneWay="True" />
+    <Connection Start="CHAMBER" Direction="In" End="SOUTH" OneWay="True" />
     <Connection Start="NORTH" Direction="East" End="EAST" OneWay="True" />
     <Connection Start="NORTH" Direction="West" End="WEST" OneWay="True" />
     <Connection Start="EAST" Direction="North" End="NORTH" OneWay="True" />
