@@ -17,9 +17,13 @@ namespace SimpleTextAdventure
                     command = Command.GameQuit;
                     break;
                 case "":
+                    commandOut = Command.GameHelp;
+                    parametersOut = new Parameter[] { new Parameter("BLANK") };
+                    return;
                 case "help":
                 case "?":
                 case "commands":
+                case "\"help\"":
                     command = Command.GameHelp;
                     break;
                 case "version":

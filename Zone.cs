@@ -7,7 +7,7 @@ namespace SimpleTextAdventure
     {
         public string codeName;
         public string name;
-        public string examineText;
+        public string[] examineText;
 
         public Dictionary<Direction, Zone> exits = new Dictionary<Direction, Zone>();
         public Dictionary<Direction, Item> locks = new Dictionary<Direction, Item>();
@@ -21,7 +21,7 @@ namespace SimpleTextAdventure
             this.codeName = codeName.ToLower();
             this.name = name;
             this.isDark = isDark;
-            this.examineText = examineText;
+            this.examineText = examineText.Split('|');
         }
 
         public void PrintExamineText(bool playerHasLightSource)
@@ -33,7 +33,10 @@ namespace SimpleTextAdventure
             }
             else
             {
-                Program.PrintWrappedText(examineText);
+                foreach (string paragraph in examineText)
+                {
+                    Program.PrintWrappedText(paragraph);
+                }
                 PrintExitDirections();
                 PrintItems();
                 if (!playerHasVisited) playerHasVisited = true;

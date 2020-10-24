@@ -2,12 +2,16 @@
 <Root>
   <Zones>
     <Zone Name="the test #CHAMBER" IsDark="False">The walls and floor of this large room are solid concrete. Far above you, florescent lights hang amongst thick metal rafters. Your footsteps echo through the cavernous room. The enormous metal door through which you entered was sealed behind you. At the center of the room stands a towering monolithic archway. The monument wouldn't look out of place at Stonehenge but for the surface being completely covered in carved symbols and images. Nearby sits a small wooden table for holding items.</Zone>
+    <Zone Name="the #NORTH side of a farmhouse" IsDark="False">You are standing outside of an unpainted wooden farmhouse, barely more than a shack. The sky is cloudy and casts a slightly reddish twilight light over everything. In every direction as far as the eye can see the land is flat, and knee-high grass waves in a cold breeze that smells of ocean air despite no sign of the sea nearby. You don't see the archway anywhere. | The front door is on this side of farmhouse. Peeking in the windows reveals a dim, unfurnished interior.</Zone>
+    <Zone Name="the #EAST side of a farmhouse" IsDark="False"> You are standing outside of an unpainted wooden farmhouse, barely more than a shack. The sky is cloudy and casts a slightly reddish twilight light over everything. In every direction as far as the eye can see the land is flat, and knee-high grass waves in a cold breeze that smells of ocean air despite no sign of the sea nearby. You don't see the archway anywhere. | Far away to the east, lightning flashes rapidly in an intense thunderstorm. From this distance only a faint rumbling of thunder can be heard.</Zone>
+    <Zone Name="the #SOUTH side of a farmhouse" IsDark="False">You are standing outside of an unpainted wooden farmhouse, barely more than a shack. The sky is cloudy and casts a slightly reddish twilight light over everything. In every direction as far as the eye can see the land is flat, and knee-high grass waves in a cold breeze that smells of ocean air despite no sign of the sea nearby. You don't see the archway anywhere. | On the horizon to the south, a wildfire rages, billowing a column black smoke into the air.</Zone>
+    <Zone Name="the #WEST side of a farmhouse" IsDark="False"> You are standing outside of an unpainted wooden farmhouse, barely more than a shack. The sky is cloudy and casts a slightly reddish twilight light over everything. In every direction as far as the eye can see the land is flat, and knee-high grass waves in a cold breeze that smells of ocean air despite no sign of the sea nearby. You don't see the archway anywhere. | The peaks of mountaintops can be seen just over the horizon. They must be hundreds of miles away.</Zone>
     
     <Zone Name="the #STUDY" IsDark="False">A spacious office with a large desk and a fireplace.</Zone>
     <Zone Name="the #BILLIARD room" IsDark="False">A gaming room featuring a billiard table.</Zone>
     <Zone Name="the #LOUNGE" IsDark="False">A relaxing space.</Zone>
     <Zone Name="the #LIBRARY" IsDark="False">The walls are lined with bookcases.</Zone>
-    <Zone Name="the #HALL" IsDark="False">The main hall of the building.</Zone>
+    <Zone Name="the #HALL" IsDark="False">TESTING MODE // This is the start of the placeholder/debugging content.</Zone>
     <Zone Name="the #DINING room" IsDark="False">The large dining table could seat six or seven.</Zone>
     <Zone Name="the #CONSERVATORY" IsDark="False">A humid sunroom with a variety of plants.</Zone>
     <Zone Name="the #BALLROOM" IsDark="False">An opulent ballroom, empty save for a grand piano.</Zone>
@@ -32,7 +36,17 @@
     <Item Name="a #TOWEL" StartLocation="NONE" Type="X">Don't panic.</Item>
   </Items>
   <ZoneConnections>
-    <Connection Start="CHAMBER" Direction="In" End="HALL" Key="SCEPTER" OneWay="True" />
+    <Connection Start="CHAMBER" Direction="In" End="SOUTH" Key="SCEPTER" OneWay="True" />
+    <Connection Start="NORTH" Direction="East" End="EAST" OneWay="True" />
+    <Connection Start="NORTH" Direction="West" End="WEST" OneWay="True" />
+    <Connection Start="EAST" Direction="North" End="NORTH" OneWay="True" />
+    <Connection Start="EAST" Direction="South" End="SOUTH" OneWay="True" />
+    <Connection Start="SOUTH" Direction="East" End="EAST" OneWay="True" />
+    <Connection Start="SOUTH" Direction="West" End="WEST" OneWay="True" />
+    <Connection Start="WEST" Direction="North" End="NORTH" OneWay="True" />
+    <Connection Start="WEST" Direction="South" End="SOUTH" OneWay="True" />
+    
+    <Connection Start="NORTH" Direction="In" End="HALL" OneWay="True" />
     
     <Connection Start="STUDY" Direction="East" End="BILLIARD" />
     <Connection Start="BILLIARD" Direction="East" End="LOUNGE" />

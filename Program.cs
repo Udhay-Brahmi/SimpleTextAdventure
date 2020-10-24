@@ -9,7 +9,7 @@ namespace SimpleTextAdventure
     {
         public static string gameName = "SimpleTextAdventure";
         public static string gameAuthor = "Nonparoxysmic";
-        public static string gameVersion = "Alpha 0.1_4";
+        public static string gameVersion = "Alpha 0.1_5";
 
         static readonly string wrappingIndent = "  ";
         static readonly bool indentFirstLine = false;

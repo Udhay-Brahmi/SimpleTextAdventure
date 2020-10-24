@@ -66,6 +66,13 @@ namespace SimpleTextAdventure
                     if (currentZone.exits.ContainsKey(direction))
                     {
                         Program.PrintWrappedText("You move " + direction + ". ");
+
+                        if (currentZone.codeName == "chamber" && direction == Direction.In)
+                        {
+                            inventory.Remove(inventory.Find(x => x.codeName == "scepter"));
+                            Program.PrintWrappedText("The scepter disappears from your hands and the world changes around you as you walk through the archway.");
+                        }
+
                         currentZone = currentZone.exits[direction];
                         Program.PrintWrappedText("You arrive at " + currentZone.name + ".");
                         if (!currentZone.playerHasVisited)

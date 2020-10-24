@@ -39,7 +39,7 @@ namespace SimpleTextAdventure
                         Environment.Exit(0);
                         break;
                     case Command.GameHelp:
-                        PrintGameHelp();
+                        PrintGameHelp(parameters);
                         break;
                     case Command.GameVersion:
                         PrintGameVersion();
@@ -96,8 +96,13 @@ namespace SimpleTextAdventure
             Console.ReadKey(true);
         }
         
-        void PrintGameHelp()
+        void PrintGameHelp(Parameter[] parameters)
         {
+            if (parameters.Length == 1 && parameters[0].type == ParameterType.String && parameters[0].stringParameter == "BLANK")
+            {
+                Program.PrintWrappedText("Type \"help\" for a list of commands.");
+                return;
+            }
             Program.PrintWrappedText("List of Commands:");
             Program.PrintWrappedText("- Menu Commands: quit, help, version");
             Program.PrintWrappedText("- Basic Commands: look, move, examine, wait");
