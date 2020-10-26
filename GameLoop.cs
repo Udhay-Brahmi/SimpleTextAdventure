@@ -8,10 +8,12 @@ namespace SimpleTextAdventure
         readonly Player player;
         int commandNumber;
         public List<Item> inactiveItems = new List<Item>();
+        readonly string[] introText;
 
-        public GameLoop(Player player)
+        public GameLoop(Player player, string[] introText)
         {
             this.player = player;
+            this.introText = introText;
         }
 
         public void PlayGame()
@@ -19,9 +21,11 @@ namespace SimpleTextAdventure
             // Testing intro:
             int testNumberOfItems = 9;
             Program.PrintWrappedText("TESTING MODE // Goal: take " + testNumberOfItems + " items to the study.");
-            Console.WriteLine();
 
-            Program.PrintWrappedText("~~Intro text to be added~~");
+            foreach (string paragraph in introText)
+            {
+                Program.PrintWrappedText(paragraph);
+            }
             Console.WriteLine();
             Program.PrintWrappedText("You are in " + player.currentZone.name + ".");
             player.currentZone.PrintExamineText(player.hasLightSource);

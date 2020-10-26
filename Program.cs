@@ -9,7 +9,7 @@ namespace SimpleTextAdventure
     {
         public static string gameName = "SimpleTextAdventure";
         public static string gameAuthor = "Nonparoxysmic";
-        public static string gameVersion = "Alpha 0.1_6";
+        public static string gameVersion = "Alpha 0.1_7";
 
         static readonly string wrappingIndent = "  ";
         static readonly bool indentFirstLine = false;
@@ -45,8 +45,10 @@ namespace SimpleTextAdventure
             Zone startingZone = zoneList.FirstOrDefault(x => x.codeName.ToLower() == startingZoneName.ToLower());
             if (startingZone == null) Program.PrintErrorAndExit("XML: Error in Starting Zone Data");
 
+            string[] introText = worldData.Element("Introduction").Value.Split('|');
+
             Player player = new Player("Tabula Rasa", startingZone);
-            GameLoop gameLoop = new GameLoop(player);
+            GameLoop gameLoop = new GameLoop(player, introText);
 
             List<XElement> itemData = worldData.Elements().FirstOrDefault(x => x.Name == "Items").Elements().ToList();
             List<Item> itemsForItemReferences = new List<Item>();
