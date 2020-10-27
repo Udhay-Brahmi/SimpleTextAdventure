@@ -104,7 +104,8 @@ namespace SimpleTextAdventure
         {
             if (parameters.Length == 0)
             {
-                Program.PrintWrappedText("This command requires a target.");
+                Program.PrintWrappedText("You examine " + currentZone.name + ".");
+                currentZone.PrintExamineText(hasLightSource);
             }
             else if (currentZone.isDark && !hasLightSource)
             {
@@ -135,7 +136,7 @@ namespace SimpleTextAdventure
                         }
                     }
                 }
-                if (currentZone.codeName == parameters[0].stringParameter)
+                if (currentZone.codeName == parameters[0].stringParameter || currentZone.codeName == parameters[0].directionParameter.ToString().ToLower())
                 {
                     Program.PrintWrappedText("You examine " + currentZone.name + ".");
                     currentZone.PrintExamineText(hasLightSource);

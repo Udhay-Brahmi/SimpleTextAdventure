@@ -114,7 +114,7 @@ namespace SimpleTextAdventure
             Program.PrintWrappedText("Variations:");
             Program.PrintWrappedText("- look, look <direction>, l <direction>");
             Program.PrintWrappedText("- move <direction>, go <direction>, <direction>");
-            Program.PrintWrappedText("- examine <target>, x <target>");
+            Program.PrintWrappedText("- examine, x, examine <target>, x <target>");
             Program.PrintWrappedText("- inventory, i");
             Program.PrintWrappedText("- take <item>, take all");
             Program.PrintWrappedText("- drop <item>, drop all");
